@@ -1,137 +1,256 @@
-{% extends "admin_layout.html" %}
-
-{% block title %} Add Employer {% endblock %}
-
+{% extends "admin_layout.html" %} {% block title %} Add Employer {% endblock %}
 {% block content %}
 <div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">Register New Employer</h4>
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action="{{ url_for('add_employer') }}"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="nav nav-pills flex-column flex-md-row mb-3">
+            <li class="nav-item">
+              <a class="nav-link active" href="javascript:void(0);"
+                ><i class="bx bx-user me-1"></i>Create Account</a
+              >
+            </li>
+          </ul>
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <ul>
+            {% for category, message in messages %}
+            <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %}
 
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4">Register New Employer</h4>
-        <form method="POST" enctype="multipart/form-data" action="{{ url_for('add_employer') }}">
-
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="nav nav-pills flex-column flex-md-row mb-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Create Account</a>
-                    </li>
-                </ul>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul>
-                        {% for category, message in messages %}
-                            <li class="alert alert-{{ category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        
-
-                <div class="card mb-4">
-                    <h5 class="card-header">Profile Details</h5>
-                    <div class="card-body">
-                        <div class="d-flex align-items-start align-items-sm-center gap-4">
-                            <img src="{{ url_for('static', filename='assets/img/avatars/1.png') }}" alt="company-logo" 
-                                 class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
-                            <div class="button-wrapper">
-                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                    <span class="d-none d-sm-block">Upload Logo</span>
-                                    <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="logo" />
-                                </label>
-                                <button type="button" class="btn btn-secondary account-image-reset" tabindex="0">Reset Logo</button>
-                                <p class="text-muted mb-0">Allowed formats: JPG, PNG. Max size: 2MB.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-0" />
-                    <div class="card-body">
-                            <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="company_name" class="form-label">Company Name</label>
-                                    <input class="form-control" type="text" id="company_name" name="company_name" placeholder="Enter Company Name" required />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="location" class="form-label">Location</label>
-                                    <input class="form-control" type="text" id="location" name="location" placeholder="Enter Location" required />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="contact_email" class="form-label">Contact Email</label>
-                                    <input class="form-control" type="email" id="contact_email" name="contact_email" placeholder="Enter Email" required />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="industry" class="form-label">Industry</label>
-                                    <select class="form-control" id="industry" name="industry" required>
-                                        <option value="" disabled selected>Please select an industry</option>
-                                        {% for industry in industries %}
-                                            <option value="{{ industry['industry_id'] }}">{{ industry['industry_name'] }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="company_size" class="form-label">Company Size</label>
-                                    <input class="form-control" type="text" id="company_size" name="company_size" placeholder="Enter Company Size" />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="description" class="form-label">Company Description</label>
-                                    <textarea class="form-control" id="description" name="description" placeholder="Enter Company Description" required></textarea>
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="established_year" class="form-label">Established Year 
-                                        <i class="bx bx-info-circle" data-bs-toggle="tooltip" title="Year the company was founded"></i>
-                                    </label>
-                                    <input class="form-control" type="number" id="established_year" name="established_year" placeholder="Enter Established Year" required />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="website" class="form-label">Website</label>
-                                    <input class="form-control" type="url" id="website" name="website" placeholder="Enter Website URL" />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="contact_person" class="form-label">Contact Person</label>
-                                    <input class="form-control" type="text" id="contact_person" name="contact_person" placeholder="Enter Contact Person" required />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="contact_phone" class="form-label">Contact Phone</label>
-                                    <input class="form-control" type="text" id="contact_phone" name="contact_phone" placeholder="Enter Contact Phone" 
-                                           pattern="[0-9]+" maxlength="15" title="Only numbers allowed" required />
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <button type="submit" class="btn btn-primary me-2">Add Employer</button>
-                                <a href="{{ url_for('manage_users') }}" class="btn btn-secondary ms-2">Back</a>
-                            </div>
-                    </div>
+          <div class="card mb-4">
+            <h5 class="card-header">Profile Details</h5>
+            <div class="card-body">
+              <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img
+                  src="{{ url_for('static', filename='assets/img/avatars/1.png') }}"
+                  alt="company-logo"
+                  class="d-block rounded"
+                  height="100"
+                  width="100"
+                  id="uploadedAvatar"
+                />
+                <div class="button-wrapper">
+                  <label
+                    for="upload"
+                    class="btn btn-primary me-2 mb-4"
+                    tabindex="0"
+                  >
+                    <span class="d-none d-sm-block">Upload Logo</span>
+                    <i class="bx bx-upload d-block d-sm-none"></i>
+                    <input
+                      type="file"
+                      id="upload"
+                      class="account-file-input"
+                      hidden
+                      accept="image/png, image/jpeg"
+                      name="logo"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    class="btn btn-secondary account-image-reset"
+                    tabindex="0"
+                  >
+                    Reset Logo
+                  </button>
+                  <p class="text-muted mb-0">
+                    Allowed formats: JPG, PNG. Max size: 2MB.
+                  </p>
                 </div>
+              </div>
             </div>
+            <hr class="my-0" />
+            <div class="card-body">
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="company_name" class="form-label"
+                    >Company Name</label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="company_name"
+                    name="company_name"
+                    placeholder="Enter Company Name"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="location" class="form-label">Location</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Enter Location"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="contact_email" class="form-label"
+                    >Contact Email</label
+                  >
+                  <input
+                    class="form-control"
+                    type="email"
+                    id="contact_email"
+                    name="contact_email"
+                    placeholder="Enter Email"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="industry" class="form-label">Industry</label>
+                  <select
+                    class="form-control"
+                    id="industry"
+                    name="industry"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Please select an industry
+                    </option>
+                    {% for industry in industries %}
+                    <option value="{{ industry['industry_id'] }}">
+                      {{ industry['industry_name'] }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="company_size" class="form-label"
+                    >Company Size</label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="company_size"
+                    name="company_size"
+                    placeholder="Enter Company Size"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="description" class="form-label"
+                    >Company Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    placeholder="Enter Company Description"
+                    required
+                  ></textarea>
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="established_year" class="form-label"
+                    >Established Year
+                    <i
+                      class="bx bx-info-circle"
+                      data-bs-toggle="tooltip"
+                      title="Year the company was founded"
+                    ></i>
+                  </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="established_year"
+                    name="established_year"
+                    placeholder="Enter Established Year"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="website" class="form-label">Website</label>
+                  <input
+                    class="form-control"
+                    type="url"
+                    id="website"
+                    name="website"
+                    placeholder="Enter Website URL"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="contact_person" class="form-label"
+                    >Contact Person</label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="contact_person"
+                    name="contact_person"
+                    placeholder="Enter Contact Person"
+                    required
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="contact_phone" class="form-label"
+                    >Contact Phone</label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="contact_phone"
+                    name="contact_phone"
+                    placeholder="Enter Contact Phone"
+                    pattern="[0-9]+"
+                    maxlength="15"
+                    title="Only numbers allowed"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2">
+                  Add Employer
+                </button>
+                <a
+                  href="{{ url_for('manage_users') }}"
+                  class="btn btn-secondary ms-2"
+                  >Back</a
+                >
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </form>
-    </div>
+  </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const uploadInput = document.getElementById("upload");
-        const avatarImg = document.getElementById("uploadedAvatar");
-        const resetButton = document.querySelector('.account-image-reset');
+  document.addEventListener("DOMContentLoaded", function () {
+    const uploadInput = document.getElementById("upload");
+    const avatarImg = document.getElementById("uploadedAvatar");
+    const resetButton = document.querySelector(".account-image-reset");
 
-        // Update avatar preview on file selection
-        uploadInput.addEventListener("change", function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    avatarImg.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Reset to default avatar
-        resetButton.addEventListener('click', function() {
-            avatarImg.src = "{{ url_for('static', filename='assets/img/avatars/1.png') }}";
-            uploadInput.value = ""; // Clear the file input's value
-        });
+    // Update avatar preview on file selection
+    uploadInput.addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          avatarImg.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
     });
+
+    // Reset to default avatar
+    resetButton.addEventListener("click", function () {
+      avatarImg.src =
+        "{{ url_for('static', filename='assets/img/avatars/1.png') }}";
+      uploadInput.value = ""; // Clear the file input's value
+    });
+  });
 </script>
 
 {% endblock %}

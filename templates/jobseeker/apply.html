@@ -135,9 +135,14 @@
             <input type="text" class="form-control" id="cv_file" name="cv_file" value="{{ job_seeker_profile.cv_file }}" readonly>
         </div>
         <div class="d-flex justify-content-between">
-            <a href="{{ url_for('jobs') }}" class="btn btn-secondary">Back to View Job Posts</a>
+            <a href="{{ url_for('update_profile_apply', job_id=job_id) }}" class="btn btn-secondary">Update Information</a>
             <button type="submit" class="btn btn-primary">Apply Now</button>
         </div>
+    </form>
+    <div class="d-flex justify-content-center mt-3">
+        <a href="{{ url_for('jobs') }}" class="btn btn-outline-secondary">Back to View Job Posts</a>
+    </div>
+
     </form>
 </section>
 {% endblock %}

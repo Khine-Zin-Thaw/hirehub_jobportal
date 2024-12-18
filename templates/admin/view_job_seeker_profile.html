@@ -1,88 +1,120 @@
-{% extends "admin_layout.html" %}
-{% block title %} View Job Seeker Profile {% endblock %}
-
-{% block content %}
+{% extends "admin_layout.html" %} {% block title %} View Job Seeker Profile {%
+endblock %} {% block content %}
 <div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h2 class="mb-4">Job Seeker Profile</h2>
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h2 class="mb-4">Job Seeker Profile</h2>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white">
-                <h3 class="mb-0">{{ job_seeker['first_name'] }} {{ job_seeker['last_name'] }}</h3>
-            </div>
-            <div class="card-body">
-                <!-- Profile Picture -->
-                <div class="row mb-4">
-                    <div class="col-md-4 text-center">
-                        {% if job_seeker['profile_picture'] %}
-                            <img src="{{ url_for('static', filename='jobseeker/images/' ~ job_seeker['profile_picture']) }}" alt="Profile Picture" class="img-thumbnail" style="max-width: 200px;">
-                        {% else %}
-                            <img src="{{ url_for('static', filename='assets/img/avatars/1.png') }}" alt="Default Profile Picture" class="img-thumbnail" style="max-width: 200px;">
-                        {% endif %}
-                    </div>
-                    <div class="col-md-8">
-                        <p><strong>Bio:</strong> {{ job_seeker['bio'] or 'N/A' }}</p>
-                        <p><strong>Location:</strong> {{ job_seeker['location'] or 'N/A' }}</p>
-                        <p><strong>Desired Job Title:</strong> {{ job_seeker['desired_job_title'] or 'N/A' }}</p>
-                        <p><strong>Experience:</strong> {{ job_seeker['experience_years'] or 'N/A' }} years</p>
-                    </div>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="card bg-light p-3 mb-4">
-                    <h5 class="mb-3">Contact Information</h5>
-                    <p><strong>Email:</strong> {{ job_seeker['contact_email'] or 'N/A' }}</p>
-                    <p><strong>Phone:</strong> {{ job_seeker['contact_phone'] or 'N/A' }}</p>
-                </div>
-
-                <!-- Skills, Education, and Files -->
-                <div class="card bg-light p-3 mb-4">
-                    <h5 class="mb-3">Skills & Education</h5>
-                    <p><strong>Skills:</strong> {{ job_seeker['skills'] or 'N/A' }}</p>
-                    <p><strong>Education:</strong> {{ job_seeker['education'] or 'N/A' }}</p>
-                </div>
-
-                <!-- Links -->
-                <div class="card bg-light p-3 mb-4">
-                    <h5 class="mb-3">Links</h5>
-                    <p><strong>LinkedIn:</strong> 
-                        {% if job_seeker['linkedin_url'] %}
-                            <a href="{{ job_seeker['linkedin_url'] }}" target="_blank">{{ job_seeker['linkedin_url'] }}</a>
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </p>
-                    <p><strong>Portfolio:</strong> 
-                        {% if job_seeker['portfolio_url'] %}
-                            <a href="{{ job_seeker['portfolio_url'] }}" target="_blank">{{ job_seeker['portfolio_url'] }}</a>
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </p>
-                </div>
-
-                <!-- CV File -->
-                <div class="card bg-light p-3 mb-4">
-                    <h5 class="mb-3">CV</h5>
-                    {% if job_seeker['cv_file'] %}
-                        <a href="{{ url_for('static', filename='jobseeker/files_cv/' ~ job_seeker['cv_file']) }}" class="btn btn-primary" target="_blank">
-                            View CV
-                        </a>
-                    {% else %}
-                        <p class="text-muted">No CV uploaded.</p>
-                    {% endif %}
-                </div>
-
-                <!-- Metadata -->
-                <div class="card bg-light p-3">
-                    <h5 class="mb-3">Profile Metadata</h5>
-                    <p><strong>Created At:</strong> {{ job_seeker['created_at'] }}</p>
-                    <p><strong>Updated At:</strong> {{ job_seeker['updated_at'] }}</p>
-                </div>
-            </div>
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark text-white">
+        <h3 class="mb-0">
+          {{ job_seeker['first_name'] }} {{ job_seeker['last_name'] }}
+        </h3>
+      </div>
+      <div class="card-body">
+        <!-- Profile Picture -->
+        <div class="row mb-4">
+          <div class="col-md-4 text-center">
+            {% if job_seeker['profile_picture'] %}
+            <img
+              src="{{ url_for('static', filename='jobseeker/images/' ~ job_seeker['profile_picture']) }}"
+              alt="Profile Picture"
+              class="img-thumbnail"
+              style="max-width: 200px"
+            />
+            {% else %}
+            <img
+              src="{{ url_for('static', filename='assets/img/avatars/1.png') }}"
+              alt="Default Profile Picture"
+              class="img-thumbnail"
+              style="max-width: 200px"
+            />
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <p><strong>Bio:</strong> {{ job_seeker['bio'] or 'N/A' }}</p>
+            <p>
+              <strong>Location:</strong> {{ job_seeker['location'] or 'N/A' }}
+            </p>
+            <p>
+              <strong>Desired Job Title:</strong> {{
+              job_seeker['desired_job_title'] or 'N/A' }}
+            </p>
+            <p>
+              <strong>Experience:</strong> {{ job_seeker['experience_years'] or
+              'N/A' }} years
+            </p>
+          </div>
         </div>
 
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Back</a>
+        <!-- Contact Information -->
+        <div class="card bg-light p-3 mb-4">
+          <h5 class="mb-3">Contact Information</h5>
+          <p>
+            <strong>Email:</strong> {{ job_seeker['contact_email'] or 'N/A' }}
+          </p>
+          <p>
+            <strong>Phone:</strong> {{ job_seeker['contact_phone'] or 'N/A' }}
+          </p>
+        </div>
+
+        <!-- Skills, Education, and Files -->
+        <div class="card bg-light p-3 mb-4">
+          <h5 class="mb-3">Skills & Education</h5>
+          <p><strong>Skills:</strong> {{ job_seeker['skills'] or 'N/A' }}</p>
+          <p>
+            <strong>Education:</strong> {{ job_seeker['education'] or 'N/A' }}
+          </p>
+        </div>
+
+        <!-- Links -->
+        <div class="card bg-light p-3 mb-4">
+          <h5 class="mb-3">Links</h5>
+          <p>
+            <strong>LinkedIn:</strong>
+            {% if job_seeker['linkedin_url'] %}
+            <a href="{{ job_seeker['linkedin_url'] }}" target="_blank"
+              >{{ job_seeker['linkedin_url'] }}</a
+            >
+            {% else %} N/A {% endif %}
+          </p>
+          <p>
+            <strong>Portfolio:</strong>
+            {% if job_seeker['portfolio_url'] %}
+            <a href="{{ job_seeker['portfolio_url'] }}" target="_blank"
+              >{{ job_seeker['portfolio_url'] }}</a
+            >
+            {% else %} N/A {% endif %}
+          </p>
+        </div>
+
+        <!-- CV File -->
+        <div class="card bg-light p-3 mb-4">
+          <h5 class="mb-3">CV</h5>
+          {% if job_seeker['cv_file'] %}
+          <a
+            href="{{ url_for('static', filename='jobseeker/files_cv/' ~ job_seeker['cv_file']) }}"
+            class="btn btn-primary"
+            target="_blank"
+          >
+            View CV
+          </a>
+          {% else %}
+          <p class="text-muted">No CV uploaded.</p>
+          {% endif %}
+        </div>
+
+        <!-- Metadata -->
+        <div class="card bg-light p-3">
+          <h5 class="mb-3">Profile Metadata</h5>
+          <p><strong>Created At:</strong> {{ job_seeker['created_at'] }}</p>
+          <p><strong>Updated At:</strong> {{ job_seeker['updated_at'] }}</p>
+        </div>
+      </div>
     </div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3"
+      >Back</a
+    >
+  </div>
 </div>
 {% endblock %}

@@ -177,12 +177,12 @@ def jobseeker_login(user_type):
         # Check if a user with the provided email and user_type exists
         if not user:
             flash("Invalid email or user type.", "danger")
-            return redirect(url_for('login', user_type=user_type))
+            return redirect(url_for('jobseeker_login', user_type='job_seeker'))
 
         # Check if the entered password matches the stored hashed password
         if not bcrypt.check_password_hash(user['password'], password):
             flash("Invalid password.", "danger")
-            return redirect(url_for('login', user_type=user_type))
+            return redirect(url_for('jobseeker_login', user_type='job_seeker'))
 
         # Set user session details if login is successful
         session['user_id'] = user['user_id']
@@ -192,7 +192,7 @@ def jobseeker_login(user_type):
             return redirect(url_for('job_seeker_index'))
         else:
             flash("Invalid user type.", "danger")
-            return redirect(url_for('login', user_type=user_type))
+            return redirect(url_for('jobseeker_login', user_type='job_seeker'))
 
     # If GET request or login fails, render the login page
     return render_template('jobseeker/jobseeker_login.html',
@@ -1611,6 +1611,7 @@ def employer_post_jobs():
 @app.route('/employer_edit_job_posts/<int:job_id>', methods=['GET', 'POST'])
 def employer_edit_job_posts(job_id):
     """Edit a job post created by the employer."""
+    # Ensure the user is logged in and is an employer
     if 'user_id' not in session or session.get('user_type') != 'employer':
         flash("Please log in to access this page.", "warning")
         return redirect(url_for('login'))
@@ -1620,8 +1621,8 @@ def employer_edit_job_posts(job_id):
 
     # Fetch job details
     job = conn.execute(
-        'SELECT * FROM Jobs WHERE job_id = ? AND employer_id = ?', (
-            job_id, user_id)
+        'SELECT * FROM Jobs WHERE job_id = ? AND employer_id = ?',
+        (job_id, user_id)
     ).fetchone()
 
     if not job:
@@ -1630,9 +1631,11 @@ def employer_edit_job_posts(job_id):
 
     # Fetch job categories and industries for the dropdown
     categories = conn.execute(
-        'SELECT category_id, category_name FROM JobCategories').fetchall()
+        'SELECT category_id, category_name FROM JobCategories'
+    ).fetchall()
     industries = conn.execute(
-        'SELECT industry_id, industry_name FROM Industries').fetchall()
+        'SELECT industry_id, industry_name FROM Industries'
+    ).fetchall()
 
     if request.method == 'POST':
         try:
@@ -1640,35 +1643,28 @@ def employer_edit_job_posts(job_id):
             title = request.form.get('title') or job['title']
             description = request.form.get('description') or job['description']
             location = request.form.get('location') or job['location']
-            salary_range = request.form.get(
-                'salary_range') or job['salary_range']
+            salary_range = request.form.get('salary_range') or job['salary_range']
             category_id = request.form.get('category_id') or job['category_id']
             industry_id = request.form.get('industry_id') or job['industry_id']
             job_type = request.form.get('job_type') or job['job_type']
-            min_education_level = request.form.get(
-                'min_education_level') or job['min_education_level']
-            experience_level = request.form.get(
-                'experience_level') or job['experience_level']
-            full_description = request.form.get(
-                'full_description') or job['full_description']
-            # Keep old value if checkbox is not toggled
-            is_active = 1 if 'is_active' in request.form else job['is_active']
+            min_education_level = request.form.get('min_education_level') or job['min_education_level']
+            experience_level = request.form.get('experience_level') or job['experience_level']
+            full_description = request.form.get('full_description') or job['full_description']
 
-            # Update the job post
+            # Properly handle checkbox for job status
+            is_active = 1 if request.form.get('is_active') else 0
+
+            # Update the job post in the database
             conn.execute('''
                 UPDATE Jobs
                 SET title = ?, description = ?, category_id = ?, industry_id = ?,
-                location = ?,
-                    salary_range = ?, job_type = ?, min_education_level = ?,
-                    experience_level = ?,
-                    full_description = ?, is_active = ?
+                    location = ?, salary_range = ?, job_type = ?, min_education_level = ?,
+                    experience_level = ?, full_description = ?, is_active = ?
                 WHERE job_id = ? AND employer_id = ?
             ''', (
                 title, description, category_id, industry_id, location,
-                salary_range,
-                job_type, min_education_level, experience_level,
-                full_description,
-                is_active, job_id, user_id
+                salary_range, job_type, min_education_level, experience_level,
+                full_description, is_active, job_id, user_id
             ))
 
             conn.commit()

@@ -1,0 +1,137 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Update Application Status | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Update Application Status</h4>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-4 shadow-lg">
+                <div class="card-header text-center bg-dark text-white">
+                    <h5>Update Application Status</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('employer_update_application_status', application_id=application.application_id) }}">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Applicant Name:</label>
+                            <p class="mb-1">
+                                <strong>{{ application.first_name }} {{ application.last_name }}</strong>
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Contact Information:</label>
+                            <p class="text-muted">
+                                {{ application.contact_email }} | {{ application.contact_phone }}
+                            </p>
+                        </div>
+                                                <div class="mb-3">
+                            <label for="currentStatus" class="form-label fw-bold">Current Status</label>
+                            <input 
+                                type="text" 
+                                class="form-control bg-light" 
+                                id="currentStatus" 
+                                value="{{ application.application_status }}" 
+                                readonly
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="newStatus" class="form-label fw-bold">Update Status</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="statusOptions" 
+                                        id="applied" 
+                                        value="Applied" 
+                                        {% if application.application_status == 'Applied' %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="applied">Applied</label>
+                                </div>
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="statusOptions" 
+                                        id="interview" 
+                                        value="Interview"
+                                        {% if application.application_status == 'Interview' %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="interview">Interview</label>
+                                </div>
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="statusOptions" 
+                                        id="offer" 
+                                        value="Offer"
+                                        {% if application.application_status == 'Offer' %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="offer">Offer</label>
+                                </div>
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="statusOptions" 
+                                        id="rejected" 
+                                        value="Rejected"
+                                        {% if application.application_status == 'Rejected' %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="rejected">Rejected</label>
+                                </div>
+                                <div class="form-check">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="statusOptions" 
+                                        id="scheduledMeeting" 
+                                        value="Scheduled Meeting"
+                                        {% if application.application_status == 'Scheduled Meeting' %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="scheduledMeeting">Scheduled Meeting</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="remarks" class="form-label fw-bold">Remarks</label>
+                            <textarea 
+                                class="form-control" 
+                                id="remarks" 
+                                name="remarks"
+                                rows="4" 
+                                placeholder="Add any remarks here (optional)"
+                            >{{ application.remarks }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('employer_manage_applications') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Update Status
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

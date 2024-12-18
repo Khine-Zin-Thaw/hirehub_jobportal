@@ -1,0 +1,86 @@
+{% extends "admin_layout.html" %}
+
+{% block title %} Employer Details Profile {% endblock %}
+
+{% block content %}
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h2 class="mb-4">Employer Details Profile</h2>
+
+        <div class="card shadow-sm p-4">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+                <img 
+                    src="{{ url_for('static', filename='employer/images/' + employer['logo'] if employer['logo'] else 'assets/img/avatars/1.png') }}" 
+                    alt="company-logo" 
+                    class="rounded-circle img-thumbnail" 
+                    height="150" 
+                    width="150" 
+                />
+            </div>
+
+            <!-- Employer Information -->
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row" style="width: 30%;">Company Name</th>
+                            <td>{{ employer['company_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Industry</th>
+                            <td>{{ employer['industry'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Location</th>
+                            <td>{{ employer['location'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Website</th>
+                            <td>
+                                {% if employer['website'] %}
+                                    <a href="{{ employer['website'] }}" target="_blank">{{ employer['website'] }}</a>
+                                {% else %}
+                                    Not available
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Company Size</th>
+                            <td>{{ employer['company_size'] }} employees</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ employer['description'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Established Year</th>
+                            <td>{{ employer['established_year'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact Person</th>
+                            <td>{{ employer['contact_person'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact Email</th>
+                            <td>{{ employer['contact_email'] }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact Phone</th>
+                            <td>{{ employer['contact_phone'] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('manage_users') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

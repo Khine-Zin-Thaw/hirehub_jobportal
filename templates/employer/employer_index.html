@@ -1,0 +1,110 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Employer Dashboard{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container text-center py-5">
+        <h1>Welcome, Employer!</h1>
+        <p>Manage your job postings, applications, and analytics here.</p>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Dashboard Overview</h2>
+    <div class="row g-4">
+        <!-- Job Postings Overview -->
+        <div class="col-md-6 d-flex">
+            <div class="card text-center border-0 shadow-lg rounded flex-fill">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-clipboard-check-fill text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Job Postings Overview</h5>
+                    <p>Total Jobs Posted: <strong>{{ job_stats.total_jobs }}</strong></p>
+                    <p>Active Jobs: <strong>{{ job_stats.active_jobs }}</strong></p>
+                    <p>Closed Jobs: <strong>{{ job_stats.closed_jobs }}</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications Summary -->
+        <div class="col-md-6 d-flex">
+            <div class="card text-center border-0 shadow-lg rounded flex-fill">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-inbox-fill text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Applications Summary</h5>
+                    <p>Total Applications: <strong>{{ application_stats.total_applications }}</strong></p>
+                    <p>Pending Review: <strong>{{ application_stats.pending_review }}</strong></p>
+                    <p>Interview: <strong>{{ application_stats.interviewed }}</strong></p>
+                    <p>Rejected: <strong>{{ application_stats.rejected }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cards Section -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">What You Can Do</h2>
+    <div class="row g-4 cards-section">
+        <!-- Manage Jobs -->
+        <div class="col-lg-4 col-md-6 d-flex">
+            <div class="card text-center border-0 shadow-lg rounded flex-fill">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3">
+                            <i class="bi bi-pencil-square text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Manage Jobs</h5>
+                        <p>View, edit, or post new job openings.</p>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('manage_job_post_employer') }}" class="btn btn-primary w-100 mb-2">Start</a>
+                        <a href="{{ url_for('employer_post_jobs') }}" class="btn btn-outline-primary w-100">Create New Job</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Applications -->
+        <div class="col-lg-4 col-md-6 d-flex">
+            <div class="card text-center border-0 shadow-lg rounded flex-fill">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3">
+                            <i class="bi bi-person-lines-fill text-success" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Manage Applications</h5>
+                        <p>Review and track applications from job seekers.</p>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('employer_manage_applications') }}" class="btn btn-success w-100 mb-2">Manage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="col-lg-4 col-md-6 d-flex">
+            <div class="card text-center border-0 shadow-lg rounded flex-fill">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3">
+                            <i class="bi bi-bar-chart-line-fill text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Analytics</h5>
+                        <p>Gain insights into the performance of your job postings.</p>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('employer_view_analytics') }}" class="btn btn-warning w-100">View Analytics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

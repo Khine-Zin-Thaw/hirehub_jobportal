@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/fav.png') }}">
+    <!-- Author Meta -->
+    <meta name="author" content="codepixer">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- Meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>{% block title %}Job Listing{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/linearicons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}">					
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header id="header" id="home">
+        <div class="container">
+            <div class="row align-items-center justify-content-between d-flex">
+                <div id="logo">
+                    <h1>HireHub</h1>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active"><a href="{{ url_for('job_seeker_index') }}">Home</a></li>
+                
+                        {% if session.get('user_id') and session.get('user_type') == 'job_seeker' %}
+                            <li><a href="{{ url_for('jobs') }}">Vacancies</a></li>
+                            <li><a href="{{ url_for('view_saved_jobs') }}">Save Post</a></li>
+                            <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                            <li><a href="{{ url_for('track_applications') }}">Track Application</a></li>
+                            <li><a href="{{ url_for('job_seeker_messenger') }}" target="_blank">Messenger</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="notificationsDropdown" 
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-bell"></i> Notifications
+                                    <span class="badge bg-danger" id="notification-count">0</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" id="notification-list">
+                                    <li><a class="dropdown-item text-center text-muted">No notifications</a></li>
+                                </ul>
+                            </li>
+                                                   <li><a href="{{ url_for('manage_profile_job_seeker') }}"><i class='bx bx-user text-white mr-1'></i> Profile</a></li>
+                            <li><a class="ticker-btn" href="{{ url_for('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                            <li class="nav-item">
+                                <a class="btn btn-dark nav-link text-white" href="{{ url_for('register') }}">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-dark nav-link text-white" href="{{ url_for('jobseeker_login', user_type='job_seeker') }}">Login</a>
+                            </li>
+                                                    {% endif %}
+                    </ul>
+                </nav>
+                            </div>
+        </div>
+    </header>
+
+    {% block content %}
+
+
+    {% endblock %}
+
+    <!-- start footer Area -->		
+    <footer class="footer-area section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12">
+                    <div class="single-footer-widget">
+                        <h6>Team Member</h6>
+                        <ul class="footer-nav">
+                            <li><a href="#">Arkar San</a></li>
+                            <li><a href="#">Zin Lin Htet</a></li>
+                            <li><a href="#">Thin Sandi Oo</a></li>
+                            <li><a href="#">Khine Zin Thaw</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="single-footer-widget newsletter">
+                        <h6>Newsletter</h6>
+                        <p>You can trust us. We only send promo offers, not a single spam.</p>
+                        <div id="mc_embed_signup">
+                        </div>		
+                    </div>
+                </div>
+            </div>
+            <div class="row footer-bottom d-flex justify-content-between">
+                <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="fa fa-heart-o" aria-hidden="true"></i> Reference <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                </p>
+                <div class="col-lg-4 col-sm-12 footer-social">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-dribbble"></i></a>
+                    <a href="#"><i class="fa fa-behance"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->		
+
+    <script src="{{ url_for('static', filename='js/vendor/jquery-2.2.4.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7HUiB9Yt5iX3Vfa0b4Q" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>			
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+    <script src="{{ url_for('static', filename='js/easing.min.js') }}"></script>			
+    <script src="{{ url_for('static', filename='js/hoverIntent.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/superfish.min.js') }}"></script>	
+    <script src="{{ url_for('static', filename='js/jquery.ajaxchimp.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>	
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>			
+    <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>			
+    <script src="{{ url_for('static', filename='js/parallax.min.js') }}"></script>		
+    <script src="{{ url_for('static', filename='js/mail-script.js') }}"></script>	
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>	
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch notifications on page load
+            fetch('/notifications')
+                .then(response => response.json())
+                .then(data => {
+                    const notificationList = document.getElementById('notification-list');
+                    const notificationCount = document.getElementById('notification-count');
+    
+                    if (data.length === 0) {
+                        notificationList.innerHTML = '<li><a class="dropdown-item text-center text-muted">No notifications</a></li>';
+                    } else {
+                        notificationList.innerHTML = data.map(notif => `
+                            <li>
+                                <a class="dropdown-item" href="/view_thread_job_seeker/${notif.thread_id}" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   onclick="resetNotification(${notif.thread_id})">
+                                    <strong>${notif.title}</strong><br>
+                                    <small>${notif.message}</small>
+                                </a>
+                            </li>
+                        `).join('');
+                        notificationCount.textContent = data.filter(notif => notif.is_read === 0).length;
+                    }
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        });
+    
+        function resetNotification(threadId) {
+            fetch(`/reset_notifications/${threadId}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const notificationCount = document.getElementById('notification-count');
+                        notificationCount.textContent = 0; // Reset count visually
+    
+                        // Fetch notifications again to update their "read" status
+                        fetch('/notifications')
+                            .then(response => response.json())
+                            .then(updatedNotifications => {
+                                const notificationList = document.getElementById('notification-list');
+                                if (updatedNotifications.length === 0) {
+                                    notificationList.innerHTML = '<li><a class="dropdown-item text-center text-muted">No notifications</a></li>';
+                                } else {
+                                    notificationList.innerHTML = updatedNotifications.map(notif => `
+                                        <li>
+                                            <a class="dropdown-item" href="/view_thread_job_seeker/${notif.thread_id}" target="_blank" rel="noopener noreferrer">
+                                                <strong>${notif.title}</strong><br>
+                                                <small>${notif.message}</small>
+                                            </a>
+                                        </li>
+                                    `).join('');
+                                }
+                            });
+                    }
+                })
+                .catch(error => console.error('Error resetting notification:', error));
+        }
+    </script>
+                        </body>
+</html>

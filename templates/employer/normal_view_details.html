@@ -1,0 +1,108 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Job Seeker Profile | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Job Seeker Profile</h4>
+    <div class="card shadow-lg p-4">
+        <!-- Profile Section -->
+        <div class="d-flex align-items-center gap-3">
+            <img src="{{ url_for('static', filename='jobseeker/images/' ~ job_seeker.profile_picture) if job_seeker.profile_picture else url_for('static', filename='assets/img/avatars/1.png') }}" 
+                 alt="Profile Picture" 
+                 class="rounded-circle" 
+                 width="100" 
+                 height="100">
+            <div>
+                <h5 class="mb-1">{{ job_seeker.first_name }} {{ job_seeker.last_name }}</h5>
+                <p class="text-muted mb-0">{{ job_seeker.contact_email }}</p>
+                <p class="text-muted">{{ job_seeker.contact_phone }}</p>
+            </div>
+        </div>
+        <hr>
+
+        <!-- Desired Job Title -->
+        <h6 class="fw-bold">Desired Job Title:</h6>
+        <p class="text-muted">{{ job_seeker.desired_job_title if job_seeker.desired_job_title else 'Not specified' }}</p>
+
+        <!-- Cover Letter Section -->
+        <h6 class="fw-bold mt-4">Cover Letter:</h6>
+        <p class="text-muted">{{ job_seeker.cover_letter if job_seeker.cover_letter else 'No cover letter provided.' }}</p>
+
+        <!-- Resume Section -->
+        <h6 class="fw-bold">Resume:</h6>
+        {% if job_seeker.cv_file %}
+            <p>
+                <a href="{{ url_for('static', filename='jobseeker/files_cv/' ~ job_seeker.cv_file) }}" 
+                   class="btn btn-primary btn-sm" 
+                   download>
+                    <i class="bi bi-download"></i> Download Resume
+                </a>
+            </p>
+        {% else %}
+            <p class="text-muted">No resume uploaded.</p>
+        {% endif %}
+
+        <!-- Profile Summary Section -->
+        <h6 class="fw-bold mt-4">Profile Summary:</h6>
+        <p class="text-muted">
+            {{ job_seeker.bio if job_seeker.bio else 'No profile summary provided.' }}
+        </p>
+
+        <!-- Skills Section -->
+        <h6 class="fw-bold mt-4">Skills:</h6>
+        {% if job_seeker.skills %}
+            <ul>
+                {% for skill in job_seeker.skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">No skills listed.</p>
+        {% endif %}
+
+        <!-- Experience Section -->
+        <h6 class="fw-bold mt-4">Experience:</h6>
+        <p class="text-muted">
+            {{ job_seeker.experience_years if job_seeker.experience_years else 'Not specified' }} years of experience
+        </p>
+
+        <!-- Education Section -->
+        <h6 class="fw-bold mt-4">Education:</h6>
+        <p class="text-muted">
+            {{ job_seeker.education if job_seeker.education else 'No education details provided.' }}
+        </p>
+
+        <!-- Additional Links -->
+        <h6 class="fw-bold mt-4">Additional Links:</h6>
+        <ul>
+            {% if job_seeker.linkedin_url %}
+                <li>
+                    <a href="{{ job_seeker.linkedin_url }}" target="_blank" class="text-primary">
+                        LinkedIn Profile
+                    </a>
+                </li>
+            {% endif %}
+            {% if job_seeker.portfolio_url %}
+                <li>
+                    <a href="{{ job_seeker.portfolio_url }}" target="_blank" class="text-primary">
+                        Portfolio Website
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+
+        <!-- Profile Metadata -->
+        <h6 class="fw-bold mt-4">Profile Metadata:</h6>
+        <p><strong>Created At:</strong> {{ job_seeker.created_at }}</p>
+        <p><strong>Last Updated:</strong> {{ job_seeker.updated_at }}</p>
+
+        <!-- Back Button -->
+        <div class="d-flex justify-content-start mt-4">
+            <a href="{{ url_for('employer_view_all_job_seekers') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

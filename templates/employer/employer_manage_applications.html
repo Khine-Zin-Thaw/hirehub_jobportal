@@ -1,0 +1,83 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Manage Applications | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Manage Applications</h4>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="{{ url_for('employer_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="table-responsive">
+        <table class="table bg-light shadow-sm table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Applicant Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Application Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if applications %}
+                    {% for app in applications %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ app.job_title }}</td>
+                            <td>{{ app.first_name }} {{ app.last_name }}</td>
+                            <td>{{ app.applicant_email }}</td>
+                            <td>{{ app.applicant_phone }}</td>
+                            <td>
+                                {% if app.application_status == 'Applied' %}
+                                    <span class="badge bg-warning text-dark">Applied</span>
+                                {% elif app.application_status == 'Interview' %}
+                                    <span class="badge bg-info text-dark">Interview</span>
+                                {% elif app.application_status == 'Offer' %}
+                                    <span class="badge bg-success">Offer</span>
+                                {% elif app.application_status == 'Rejected' %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                {% elif app.application_status == 'Scheduled Meeting' %}
+                                    <span class="badge bg-primary">Scheduled Meeting</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('viewcv_employer', job_seeker_id=app.job_seeker_id) }}" 
+                                   class="btn btn-sm btn-info" target="_blank">
+                                    <i class="bi bi-file-earmark-text"></i> View CV
+                                </a>
+                                <a href="{{ url_for('employer_view_job_seeker_profile', job_seeker_id=app.job_seeker_id) }}" 
+                                   class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-person-lines-fill"></i> View Profile
+                                </a>
+                                <a href="{{ url_for('employer_update_application_status', application_id=app.application_id) }}" 
+                                class="btn btn-sm btn-secondary">
+                                <i class="bi bi-person-lines-fill"></i> Update Status
+                             </a>
+                                <form action="{{ url_for('start_conversation') }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="job_seeker_id" value="{{ app.job_seeker_id }}">
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-chat-dots"></i> Start Conversation
+                                    </button>
+                                </form>
+                                                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No applications found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

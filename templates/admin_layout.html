@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html
+  lang="en"
+  class="light-style layout-menu-fixed"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="{{ url_for('static', filename='assets/') }}"
+  data-template="vertical-menu-template-free"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+  />
+
+  <title>{% block title %}Admin Panel{% endblock %}</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicon/favicon.ico') }}" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet"
+  />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/fonts/boxicons.css') }}" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/demo.css') }}" />
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+
+  <!-- Helpers -->
+  <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config: Mandatory theme config file containing global vars & default theme options -->
+  <script src="{{ url_for('static', filename='assets/js/config.js') }}"></script>
+</head>
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+
+<!-- Sidebar -->
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+  <div class="app-brand demo">
+      <a href="{{ url_for('admin_dashboard') }}" class="app-brand-link">
+          <span class="h2 demo menu-text fw-bolder ms-2">Hire Hub</span>
+      </a>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    </a>
+  </div>
+  <div class="menu-inner-shadow"></div>
+
+  <ul class="menu-inner py-1" role="menu">
+      <!-- Dashboard -->
+      <li class="menu-item">
+          <a href="{{ url_for('admin_dashboard') }}" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-circle"></i>
+              <div>Dashboard</div>
+          </a>
+      </li>
+      
+<!-- Manage Posts & Data -->
+<li class="menu-header small text-uppercase">
+  <span class="menu-header-text">Manage Job Posts</span>
+</li>
+
+<!-- Job Management -->
+<li class="menu-item">
+  <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class="menu-icon tf-icons bx bx-briefcase-alt-2"></i>
+      <div>Job Management</div>
+  </a>
+  <ul class="menu-sub list-unstyled ms-4">
+    <li class="menu-item">
+      <a href="{{ url_for('manage_industries') }}" class="menu-link">
+          <div>Manage Industry</div>
+      </a>
+  </li>
+      <li class="menu-item">
+          <a href="{{ url_for('manage_job_categories') }}" class="menu-link">
+              <div>Manage Job Categories</div>
+          </a>
+      </li>
+      <li class="menu-item">
+          <a href="{{ url_for('manage_job_posts') }}" class="menu-link">
+              <div>Manage Job Posts</div>
+          </a>
+      </li>
+  </ul>
+</li>
+
+<li class="menu-header small text-uppercase">
+  <span class="menu-header-text">Manage Application</span>
+</li>
+
+<!-- Application Management -->
+<li class="menu-item">
+  <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <i class="menu-icon tf-icons bx bx-check-circle"></i>
+      <div>Application Management</div>
+  </a>
+  <ul class="menu-sub list-unstyled ms-4">
+      <li class="menu-item">
+          <a href="{{ url_for('manage_applications') }}" class="menu-link">
+              <div>Application Status Management</div>
+          </a>
+      </li>
+  </ul>
+</li>
+
+      <!-- User Management -->
+      <li class="menu-header small text-uppercase">
+          <span class="menu-header-text">User Management</span>
+      </li>
+      <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-user-circle"></i>
+              <div>User Management</div>
+          </a>
+          <ul class="menu-sub list-unstyled ms-4">
+              <li class="menu-item">
+                  <a href="{{ url_for('manage_users') }}" class="menu-link">
+                      <div>Manage Users</div>
+                  </a>
+              </li>
+              <li class="menu-item">
+                  <a href="{{ url_for('add_employer') }}" class="menu-link">
+                      <div>Register New Employer</div>
+                  </a>
+              </li>
+          </ul>
+      </li>
+
+      <!-- Reports & Tracking -->
+      <li class="menu-header small text-uppercase">
+          <span class="menu-header-text">Reports & Tracking</span>
+      </li>
+      <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-line-chart"></i>
+              <div>Reports & Tracking</div>
+          </a>
+          <ul class="menu-sub list-unstyled ms-4">
+              <li class="menu-item">
+                  <a href="{{ url_for('report_by_date') }}" class="menu-link">
+                      <div>Viewing Reports</div>
+                  </a>
+              </li>
+          </ul>
+      </li>
+  </ul>
+</aside>
+      <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar"
+          >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+              </div>
+              <!-- /Search -->
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Place this tag where you want the button to render. -->
+                <li class="nav-item lh-1 me-3">
+                  <a
+                    class="github-button"
+                    href="{{ url_for('admin_dashboard') }}"
+                    data-icon="octicon-star"
+                    data-size="large"
+                    data-show-count="true"
+                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
+                    >Admin</a
+                  >
+                </li>
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <img src="{{ url_for('static', filename='assets/img/avatars/1.png') }}" alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                              <div class="avatar avatar-online">
+                                <img src="{{ url_for('static', filename='assets/img/avatars/1.png') }}" alt="User Avatar" class="w-px-40 h-auto rounded-circle" />
+                              </div>
+                                              </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block">John Doe</span>
+                            <small class="text-muted">Admin</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('admin_profile') }}">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url_for('logout') }}">
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+
+          <!-- / Navbar -->
+          <div class="content-wrapper">
+
+          {% block content %}
+          {% endblock %}
+
+          </div>
+        
+        <!-- Core JS -->
+        <!-- build:js assets/vendor/js/core.js -->
+        <script src="{{ url_for('static', filename='assets/vendor/libs/jquery/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/vendor/libs/popper/popper.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/vendor/js/bootstrap.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+        
+        <script src="{{ url_for('static', filename='assets/vendor/js/menu.js') }}"></script>
+        <!-- endbuild -->
+        
+        <!-- Vendors JS -->
+        <script src="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+        
+        <!-- Main JS -->
+        <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+        
+        <!-- Page JS -->
+        <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
+        
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        </body>
+        </html>
+        

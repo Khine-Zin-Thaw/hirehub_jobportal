@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100 bg-light" style="background-color:white">
+
+    <!-- Container for the title and buttons -->
+    <div class="text-center bg-secondary p-5 row rounded">
+        
+        <!-- Title -->
+        <div class="container text-center mt-2">
+            <h1 class="text-white">Welcome to the Job Portal</h1>
+            <p class="text-white">Please select your account type:</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="container text-center mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <a href="{{ url_for('login', user_type='admin') }}" class="btn btn-light text-dark p-4 rounded w-100 shadow-sm"
+                        onmouseover="this.classList.replace('btn-light', 'btn-dark'); this.classList.replace('text-dark', 'text-white');"
+                        onmouseout="this.classList.replace('btn-dark', 'btn-light'); this.classList.replace('text-white', 'text-dark');">
+                        <i class="ri-shield-user-fill me-2" style="font-size: 1.5rem;"></i><br>
+                        Admin Login
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ url_for('login', user_type='employer') }}" class="btn btn-light text-dark p-4 rounded w-100 shadow-sm"
+                        onmouseover="this.classList.replace('btn-light', 'btn-dark'); this.classList.replace('text-dark', 'text-white');"
+                        onmouseout="this.classList.replace('btn-dark', 'btn-light'); this.classList.replace('text-white', 'text-dark');">
+                        <i class="ri-team-fill me-2" style="font-size: 1.5rem;"></i><br>
+                        Employer Login
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ url_for('login', user_type='job_seeker') }}" class="btn btn-light text-dark p-4 rounded w-100 shadow-sm"
+                        onmouseover="this.classList.replace('btn-light', 'btn-dark'); this.classList.replace('text-dark', 'text-white');"
+                        onmouseout="this.classList.replace('btn-dark', 'btn-light'); this.classList.replace('text-white', 'text-dark');">
+                        <i class="ri-user-line me-2" style="font-size: 1.5rem;"></i><br>
+                        Job Seeker Login
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

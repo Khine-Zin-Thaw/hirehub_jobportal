@@ -1,0 +1,54 @@
+{% extends "admin_layout.html" %}
+
+{% block title %} Update Application Status {% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <h2 class="mb-4">Update Application Status</h2>
+
+        <!-- Display flash messages (optional) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Application Status Update Form -->
+        <form method="POST">
+            <div class="form-group mb-3">
+                <label for="status" class="form-label">Application Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="Applied" {% if application.status == 'Applied' %}selected{% endif %}>Applied</option>
+                    <option value="Interview" {% if application.status == 'Interview' %}selected{% endif %}>Interview</option>
+                    <option value="Offer" {% if application.status == 'Offer' %}selected{% endif %}>Offer</option>
+                    <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                    <option value="Scheduled Meeting" {% if application.status == 'Scheduled Meeting' %}selected{% endif %}>Scheduled Meeting</option>
+                </select>
+            </div>
+
+            <!-- Remark Field -->
+            <div class="form-group mb-3">
+                <label for="remark" class="form-label">Remark</label>
+                <textarea class="form-control" id="remark" name="remark" rows="3">{{ application.remark or '' }}</textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Update Status</button>
+        </form>
+
+        <!-- Return to Manage Applications Button -->
+        <a href="{{ url_for('manage_applications') }}" class="btn btn-secondary mt-2">Return to Manage Applications</a>
+
+    </div>
+</div>
+
+{% endblock %}

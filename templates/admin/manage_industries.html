@@ -1,0 +1,112 @@
+{% extends "admin_layout.html" %}
+
+{% block title %} Manage Industries {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">Manage Industries</h4>
+
+        <div class="d-flex justify-content-between mb-3">
+            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addIndustry">
+                Add New Industry
+            </button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mb-3">Return to Home</a>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="alert alert-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+                <div class="card mb-4">
+                    <h5 class="card-header">Industry List</h5>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Industry Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for industry in industries %}
+                                    <tr>
+                                        <td>{{ industry['industry_name'] }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" 
+                                                    data-bs-target="#editIndustry{{ industry['industry_id'] }}">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Industry Modal -->
+<div class="modal fade" id="addIndustry" tabindex="-1" aria-labelledby="addIndustryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addIndustryLabel">Add New Industry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('manage_industries') }}" method="POST">
+                <input type="hidden" name="action" value="add">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="industry_name" class="form-label">Industry Name</label>
+                        <input type="text" class="form-control" id="industry_name" name="industry_name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Industry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Industry Modal -->
+{% for industry in industries %}
+    <div class="modal fade" id="editIndustry{{ industry['industry_id'] }}" tabindex="-1" aria-labelledby="editIndustryLabel{{ industry['industry_id'] }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editIndustryLabel{{ industry['industry_id'] }}">Edit Industry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('manage_industries') }}" method="POST">
+                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="industry_id" value="{{ industry['industry_id'] }}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="industry_name_{{ industry['industry_id'] }}" class="form-label">Industry Name</label>
+                            <input type="text" class="form-control" id="industry_name_{{ industry['industry_id'] }}" 
+                                   name="industry_name" value="{{ industry['industry_name'] }}" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

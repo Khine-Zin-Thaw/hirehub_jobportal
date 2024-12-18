@@ -1,0 +1,86 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Manage Job Posts | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Manage Job Posts</h4>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Add New Job Post Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ url_for('employer_post_jobs') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> New Job Post
+        </a>
+    </div>
+
+    <!-- Job Posts Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Salary Range</th>
+                    <th>Posted Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if job_posts %}
+                    {% for job in job_posts %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>{{ job.salary_range }}</td>
+                            <td>{{ job.posted_at }}</td>
+                            <td>
+                                {% if job.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('employer_view_job_details', job_id=job.job_id) }}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye-fill"></i> View
+                                </a>
+                                <a href="{{ url_for('employer_edit_job_posts', job_id=job.job_id) }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No job posts available. Click "New Job Post" to create one.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Back to Dashboard Button -->
+    <div class="d-flex justify-content-start mt-3">
+        <a href="{{ url_for('employer_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

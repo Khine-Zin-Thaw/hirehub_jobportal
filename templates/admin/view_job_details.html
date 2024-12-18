@@ -1,0 +1,109 @@
+{% extends "admin_layout.html" %}
+
+{% block title %}View Job Post Details{% endblock %}
+
+{% block content %}
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <!-- Page Heading -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Job Post Details</h2>
+            <a href="{{ url_for('manage_job_posts') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Job Posts
+            </a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert-container">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Job Details Card -->
+        <div class="card shadow-sm p-4">
+            <!-- Employer Logo -->
+            <div class="text-center mb-4">
+                {% if job.employer_logo %}
+                    <img src="{{ url_for('static', filename='employer/images/' ~ job.employer_logo) }}" alt="Employer Logo" class="img-fluid rounded" style="max-height: 150px;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='assets/img/avatars/1.png') }}" alt="Default Logo" class="img-fluid rounded" style="max-height: 150px;">
+                {% endif %}
+            </div>
+
+            <h4 class="text-primary mb-4"><i class="bi bi-briefcase"></i> Job Information</h4>
+            <div class="row">
+                <!-- Job Fields -->
+                <div class="col-md-6">
+                    <p><strong>Job Title:</strong> <span>{{ job.title }}</span></p>
+                    <p><strong>Description:</strong> <span>{{ job.description }}</span></p>
+                    <p><strong>Category:</strong> <span>{{ job.category_name }}</span></p>
+                    <p><strong>Industry:</strong> <span>{{ job.industry_name }}</span></p>
+                    <p><strong>Location:</strong> <span>{{ job.location }}</span></p>
+                    <p><strong>Salary Range:</strong> <span>{{ job.salary_range }}</span></p>
+                    <p><strong>Posted At:</strong> <span>{{ job.posted_at.strftime('%B %d, %Y %I:%M %p') }}</span></p>
+                    <p><strong>Status:</strong> 
+                        {% if job.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactive</span>
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Employer Details -->
+                <div class="col-md-6">
+                    <h5 class="text-secondary mb-3">Employer Information</h5>
+                    <p><strong>Company Name:</strong> <span>{{ job.employer_name }}</span></p>
+                    <p><strong>Website:</strong> 
+                        <a href="{{ job.website }}" target="_blank" class="text-decoration-none">{{ job.website }}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 d-flex gap-3">
+            <a href="{{ url_for('update_job_post', job_id=job.job_id) }}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Update Job
+            </a>
+            <a href="{{ url_for('delete_job_post', job_id=job.job_id) }}" 
+               class="btn btn-danger"
+               onclick="return confirm('Are you sure you want to delete this job post?');">
+                <i class="bi bi-trash"></i> Delete Job
+            </a>
+            <a href="{{ url_for('manage_job_posts') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Manage Jobs
+            </a>
+        </div>
+            </div>
+</div>
+
+<!-- Add some custom styles for a better look -->
+<style>
+    .content-wrapper {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .card {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    .badge {
+        font-size: 14px;
+    }
+    h4 i {
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}

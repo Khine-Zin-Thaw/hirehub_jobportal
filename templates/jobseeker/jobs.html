@@ -1,0 +1,222 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Jobs - Explore{% endblock %}
+
+{% block content %}
+<style>
+    .thumb img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .single-post {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        border: 1px solid #eaeaea;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+    
+    .single-post .details {
+        flex: 1;
+    }
+
+    .cat-list li {
+        list-style: none;
+        padding: 8px 0;
+    }
+
+    .cat-list li a {
+        display: flex;
+        justify-content: space-between;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .cat-list li a:hover {
+        color: #17a2b8;
+    }
+
+    .single-slidebar h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="home">    
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row search-page-top d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-12">
+                <h1 class="text-white">Job Listings</h1>
+                <p class="text-white link-nav">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span>
+                    <a href="{{ url_for('jobs') }}"> Job Listings</a>
+                </p>
+                <form method="POST" class="serach-form-area">
+                    <div class="row justify-content-center form-wrap">
+                        <!-- Search Input -->
+                        <div class="col-lg-4 form-cols">
+                            <input type="text" class="form-control" name="search" placeholder="What are you looking for?" value="{{ search_query }}">
+                        </div>
+                        <!-- Category Filter -->
+                        <div class="col-lg-3 form-cols">
+                            <select name="category" class="form-control">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ category['category_id'] }}" {% if selected_category == category['category_id'] %}selected{% endif %}>
+                                    {{ category['category_name'] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Date Filter -->
+                        <div class="col-lg-3 form-cols">
+                            <select name="date_filter" class="form-control">
+                                <option value="">Filter by Date</option>
+                                <option value="week" {% if date_filter == 'week' %}selected{% endif %}>Posted This Week</option>
+                                <option value="month" {% if date_filter == 'month' %}selected{% endif %}>Posted This Month</option>
+                            </select>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="col-lg-2 form-cols">
+                            <button type="submit" class="btn btn-info">
+                                <span class="lnr lnr-magnifier"></span> Search
+                            </button>
+                        </div>
+                        <!-- Show All Button -->
+<div class="text-center my-3">
+    <a href="{{ url_for('jobs') }}" class="btn btn-secondary">
+        Show All Jobs
+    </a>
+</div>
+                    </div>
+                    <p class="text-white">
+                        {{ jobs|length }} Results found for 
+                        <span>
+                            "{% if search_query %}{{ search_query }}{% else %}All Jobs{% endif %}"
+                        </span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Flash Messages -->
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<!-- Job Listings -->
+<section class="post-area section-gap">
+    <div class="container">
+        <div class="row justify-content-center d-flex">
+            <div class="col-lg-8 post-list">
+                {% for job in jobs %}
+                <div class="single-post d-flex flex-row">
+                    <div class="thumb">
+                        <img src="{{ url_for('static', filename='employer/images/' ~ job.logo) }}" alt="{{ job.title }}">
+                    </div>
+                    <div class="details">
+                        <div class="title d-flex flex-row justify-content-between">
+                            <div class="titles">
+                                <a href="{{ url_for('job', job_id=job.job_id) }}">
+                                    <h4>{{ job.title }}</h4>
+                                </a>
+                                <h6>{{ job.company_name }}</h6>
+                            </div>
+                            <ul class="btns">
+                                <li>
+                                    <form action="{{ url_for('toggle_save_job', job_id=job.job_id) }}" method="POST" class="d-inline">
+                                        {% if job.is_saved %}
+                                        <button type="submit" class="btn btn-link text-danger p-0 save-btn" title="Unsave Job">
+                                            <span class="lnr lnr-heart"></span>
+                                        </button>
+                                        {% else %}
+                                        <button type="submit" class="btn btn-link text-secondary p-0 save-btn" title="Save Job">
+                                            <span class="lnr lnr-heart"></span>
+                                        </button>
+                                        {% endif %}
+                                    </form>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('apply', job_id=job.job_id) }}">Apply</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('view_employer', employer_id=job.employer_id) }}">View Employer</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <p>{{ job.description }}</p>
+                        <h5>Job Nature: {{ job.job_type }}</h5>
+                        <p class="address"><span class="lnr lnr-map"></span> {{ job.location }}</p>
+                        <p class="address"><span class="lnr lnr-database"></span> {{ job.salary_range }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-center text-muted">No jobs found matching your criteria.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 sidebar">
+                <!-- Jobs by Employer -->
+<!-- Jobs by Employer -->
+<div class="single-slidebar">
+    <!-- Show All Button -->
+<div class="text-center my-3">
+    <a href="{{ url_for('jobs') }}" class="btn btn-secondary">
+        Show All Jobs
+    </a>
+</div>
+
+    <h4>Jobs by Employer</h4>
+    <ul class="cat-list">
+        {% for employer in employers %}
+        <li>
+            <a class="justify-content-between d-flex" href="{{ url_for('jobs', employer=employer['company_name']) }}">
+                <p>{{ employer['company_name'] }}</p>
+                <span>{{ employer['job_count'] }}</span> <!-- Add job count if available -->
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Jobs by Location -->
+<div class="single-slidebar">
+    <h4>Jobs by Location</h4>
+    <ul class="cat-list">
+        {% for location in locations %}
+        <li>
+            <a class="justify-content-between d-flex" href="{{ url_for('jobs', location=location['location']) }}">
+                <p>{{ location['location'] }}</p>
+                <span>{{ location['job_count'] }}</span> <!-- Add job count if available -->
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Job Categories</h2>
+
+    <!-- Add Category Button -->
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategory">Add Category</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Return to Home</a>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<!-- Category Table -->
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Category Name</th>
+                <th scope="col">Industry Name</th>
+                <th scope="col" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category['category_name'] }}</td>
+                    <td>{{ category['industry_name'] or 'N/A' }}</td> <!-- Show Industry name or 'N/A' if not linked -->
+                    <td class="text-center">
+                        <!-- Trigger Edit Modal -->
+                        <button class="btn btn-warning btn-sm" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editCategory{{ category['category_id'] }}">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+          <!-- Edit Modal -->
+<div class="modal fade" id="editCategory{{ category['category_id'] }}" tabindex="-1" aria-labelledby="editCategoryLabel{{ category['category_id'] }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryLabel{{ category['category_id'] }}">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('manage_job_categories') }}" method="POST">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="category_id" value="{{ category['category_id'] }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="category_name_{{ category['category_id'] }}" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="category_name_{{ category['category_id'] }}" 
+                               name="category_name" value="{{ category['category_name'] }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="industry_id_{{ category['category_id'] }}" class="form-label">Industry</label>
+                        <select class="form-control" id="industry_id_{{ category['category_id'] }}" name="industry_id" required>
+                            <option value="" disabled>Select Industry</option>
+                            {% for industry in industries %}
+                                <option value="{{ industry.industry_id }}" {% if industry.industry_id == category['industry_id'] %} selected {% endif %}>
+                                    {{ industry.industry_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('manage_job_categories') }}" method="POST">
+                <input type="hidden" name="action" value="add">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="category_name" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="category_name" name="category_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="industry_id" class="form-label">Industry</label>
+                        <select class="form-control" id="industry_id" name="industry_id" required>
+                            <option value="" disabled selected>Select Industry</option>
+                            {% for industry in industries %}
+                                <option value="{{ industry.industry_id }}">{{ industry.industry_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+{% endblock %}

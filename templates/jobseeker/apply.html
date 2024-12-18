@@ -1,0 +1,143 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Apply for Job{% endblock %}
+
+{% block content %}
+<style>
+    .apply-job-container {
+        background-color: #f8f9fa;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control[readonly],
+    .form-select[readonly] {
+        background-color: #e9ecef;
+        opacity: 1;
+        cursor: not-allowed;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #565e64;
+        border-color: #434a50;
+    }
+
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .d-flex {
+        gap: 15px;
+    }
+</style>
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Apply for Job</h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Apply for Job
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Apply for Job Form -->
+<section class="container apply-job-container">
+    <h2 class="mb-4">Apply for Job</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ job_seeker_profile.first_name }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ job_seeker_profile.last_name }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ job_seeker_profile.contact_email }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="location" value="{{ job_seeker_profile.location }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="industry" class="form-label">Industry</label>
+            <input type="text" class="form-control" id="industry" name="industry" value="{{ job_seeker_profile.industry_name }}" readonly>
+        </div>
+                <div class="mb-3">
+            <label for="desired_job_title" class="form-label">Desired Job Title</label>
+            <input type="text" class="form-control" id="desired_job_title" name="desired_job_title" value="{{ job_seeker_profile.desired_job_title }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="skills" class="form-label">Skills</label>
+            <input type="text" class="form-control" id="skills" name="skills" value="{{ job_seeker_profile.skills }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="education" class="form-label">Education</label>
+            <textarea class="form-control" id="education" name="education" rows="3" readonly>{{ job_seeker_profile.education }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="experience_years" class="form-label">Experience (in years)</label>
+            <input type="number" class="form-control" id="experience_years" name="experience_years" value="{{ job_seeker_profile.experience_years }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+            <input type="url" class="form-control" id="linkedin_url" name="linkedin_url" value="{{ job_seeker_profile.linkedin_url }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="portfolio_url" class="form-label">Portfolio URL</label>
+            <input type="url" class="form-control" id="portfolio_url" name="portfolio_url" value="{{ job_seeker_profile.portfolio_url }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Bio</label>
+            <textarea class="form-control" id="bio" name="bio" rows="4" readonly>{{ job_seeker_profile.bio }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="cover_letter" class="form-label">Cover Letter</label>
+            <textarea class="form-control" id="cover_letter" name="cover_letter" rows="4" readonly>{{ job_seeker_profile.cover_letter }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="cv_file" class="form-label">CV</label>
+            <input type="text" class="form-control" id="cv_file" name="cv_file" value="{{ job_seeker_profile.cv_file }}" readonly>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('jobs') }}" class="btn btn-secondary">Back to View Job Posts</a>
+            <button type="submit" class="btn btn-primary">Apply Now</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

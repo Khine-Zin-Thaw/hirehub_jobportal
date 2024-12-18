@@ -1,0 +1,192 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Post Job | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Post Job Vacancies</h4>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-4 shadow-lg">
+                <h5 class="mb-4 text-primary fw-bold text-center">Post a Job</h5>
+
+                <!-- Display Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="alert-container">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('employer_post_jobs') }}">
+                    <!-- Job Title -->
+                    <div class="mb-3">
+                        <label for="jobTitle" class="form-label">Job Title</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-briefcase-4-line text-primary"></i></span>
+                            <input
+                                type="text"
+                                id="jobTitle"
+                                name="title"
+                                class="form-control"
+                                placeholder="Enter job title"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Salary Range -->
+                    <div class="mb-3">
+                        <label for="salary" class="form-label">Salary Range</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-money-dollar-circle-line text-success"></i></span>
+                            <input
+                                type="text"
+                                id="salary"
+                                name="salary_range"
+                                class="form-control"
+                                placeholder="Enter salary range (e.g., 50k-80k)"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-map-pin-line text-danger"></i></span>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="form-control"
+                                placeholder="Enter job location"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-list-check-2 text-warning"></i></span>
+                            <select id="category" name="category_id" class="form-select" required>
+                                <option selected disabled>Select category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.category_id }}">{{ category.category_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Industry -->
+                    <div class="mb-3">
+                        <label for="industry" class="form-label">Industry</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-building-line text-primary"></i></span>
+                            <select id="industry" name="industry_id" class="form-select" required>
+                                <option selected disabled>Select industry</option>
+                                {% for industry in industries %}
+                                    <option value="{{ industry.industry_id }}">{{ industry.industry_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Job Type -->
+                    <div class="mb-3">
+                        <label for="jobType" class="form-label">Job Type</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-time-line text-info"></i></span>
+                            <select id="jobType" name="job_type" class="form-select" required>
+                                <option selected disabled>Select job type</option>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Internship">Internship</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Minimum Education Level -->
+                    <div class="mb-3">
+                        <label for="educationLevel" class="form-label">Minimum Education Level</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-book-line text-success"></i></span>
+                            <select id="educationLevel" name="min_education_level" class="form-select" required>
+                                <option selected disabled>Select education level</option>
+                                <option value="High School">High School</option>
+                                <option value="Associate Degree">Associate Degree</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master's Degree">Master's Degree</option>
+                                <option value="Doctorate">Doctorate</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Experience Level -->
+                    <div class="mb-3">
+                        <label for="experienceLevel" class="form-label">Experience Level</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ri-bar-chart-box-line text-danger"></i></span>
+                            <select id="experienceLevel" name="experience_level" class="form-select" required>
+                                <option selected disabled>Select experience level</option>
+                                <option value="Entry Level">Entry Level</option>
+                                <option value="Mid Level">Mid Level</option>
+                                <option value="Senior Level">Senior Level</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Full Description -->
+                    <div class="mb-3">
+                        <label for="fullDescription" class="form-label">Full Job Description</label>
+                        <textarea
+                            id="fullDescription"
+                            name="full_description"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Enter detailed job description"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Job Status -->
+                    <div class="mb-3">
+                        <label class="form-label">Job Status</label>
+                        <div class="form-check form-switch">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="jobStatus"
+                                name="is_active"
+                            />
+                            <label class="form-check-label" for="jobStatus">
+                                Active
+                            </label>
+                        </div>
+                        <small class="text-muted">Toggle to set job post as Active or Inactive.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3">
+                        <a href="{{ url_for('manage_job_post_employer') }}" class="btn btn-outline-secondary">
+                            <i class="ri-close-line"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ri-check-line"></i> Post Job
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

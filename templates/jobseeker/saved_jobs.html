@@ -1,0 +1,72 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Saved Jobs{% endblock %}
+
+{% block content %}
+<style>
+
+.thumb img {
+    width: 100px; /* Set a fixed width */
+    height: 100px; /* Set a fixed height */
+    object-fit: cover; /* Ensure the image scales and crops properly */
+    border-radius: 8px; /* Optional: Adds rounded corners */
+}
+
+</style>    
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Saved Job</h1>
+                <p class="text-white link-nav">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Saved Job
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!-- Saved Jobs Section -->
+<section class="popular-post-area pt-100">
+    <div class="container">
+        <h2 class="h4 text-center mb-5">Your Saved Jobs</h2>
+        <div class="row align-items-center">
+            <div class="active-popular-post-carusel">
+                {% if saved_jobs %}
+                    {% for job in saved_jobs %}
+                        <div class="single-popular-post d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ url_for('static', filename='employer/images/' ~ job.logo) }}" alt="{{ job.title }}">
+                                <form action="{{ url_for('toggle_save_job', job_id=job.job_id) }}" method="POST">
+                                    <button type="submit" class="btns text-uppercase">unsave</button>
+                                </form>
+                            </div>
+                            <div class="details">
+                                <a href="{{ url_for('job', job_id=job.job_id) }}">
+                                    <h4>{{ job.title }}</h4>
+                                </a>
+                                <h6>{{ job.location }}</h6>
+                                <p><strong>Salary:</strong> {{ job.salary_range }}</p>
+                                <p><strong>Company:</strong> {{ job.company_name }}</p>
+                                <a href="{{ url_for('job', job_id=job.job_id) }}" class="btn btn-primary btn-sm mt-2">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">You haven't saved any jobs yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Back to Home Page Button -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('job_seeker_index') }}" class="btn btn-secondary">Back to Home Page</a>
+    </div>
+</section>
+</div>
+{% endblock %}

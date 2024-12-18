@@ -1,0 +1,174 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<!-- Start Banner Area -->
+<section class="banner-area relative" id="about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">
+                    About Us
+                </h1>
+                <p class="text-white link-nav"><a href="{{ url_for('job_seeker_index') }}">Home </a> <span class="lnr lnr-arrow-right"></span> About Us</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!-- Start Service Area -->
+<section class="service-area section-gap" id="service">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8 pb-40 header-text text-center">
+                <h1 class="text-dark">Why Choose Us</h1>
+                <p>
+                    We are passionate about connecting job seekers with opportunities and empowering employers with talented individuals.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-user"></span> Expert Technicians</h4>
+                    <p>
+                        Our team ensures smooth platform functionality with top-notch technical expertise.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-license"></span> Professional Service</h4>
+                    <p>
+                        We offer a seamless and professional experience for both job seekers and employers.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-phone"></span> Great Support</h4>
+                    <p>
+                        Dedicated support to help you at every step of your job-seeking or hiring journey.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-rocket"></span> Technical Skills</h4>
+                    <p>
+                        Leveraging cutting-edge technology to bring you the best experience possible.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-diamond"></span> Highly Recommended</h4>
+                    <p>
+                        Trusted by thousands of users across industries for our reliable services.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-service1">
+                    <h4><span class="lnr lnr-bubble"></span> Positive Reviews</h4>
+                    <p>
+                        Consistently rated highly by our satisfied users and clients.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Service Area -->
+
+<!-- Start Feature Area -->
+<section class="feature-area">
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-3 feat-img no-padding">
+            </div>
+            <div class="col-lg-3 no-padding feat-txt">
+                <h6 class="text-uppercase">Who We Are</h6>
+                <h1>Our Story</h1>
+                <p>
+                    We are dedicated to bridging the gap between job seekers and employers. With a user-centric approach, we focus on providing the best tools and opportunities for all.
+                </p>
+            </div>
+            <div class="col-lg-3 feat-img no-padding">
+            </div>
+            <div class="col-lg-3 no-padding feat-txt">
+                <h6 class="text-uppercase">What We Do</h6>
+                <h1>Our Mission</h1>
+                <p>
+                    We aim to empower individuals with job opportunities while supporting businesses in finding exceptional talent.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Feature Area -->
+
+<!-- Start Team Area -->
+<section class="team-area section-gap" id="team">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-8">
+                <div class="title text-center">
+                    <h1 class="mb-10">Meet Our Team</h1>
+                    <p>Our dedicated team of experts is here to support your journey.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex align-items-center">
+            <div class="col-md-3 single-team">
+                <div class="thumb">
+                    <div class="align-items-center justify-content-center d-flex">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="meta-text mt-30 text-center">
+                    <h4>Arkar San</h4>
+                    <p>Front End Developer</p>
+                </div>
+            </div>
+            <div class="col-md-3 single-team">
+                <div class="thumb">
+                    <div class="align-items-center justify-content-center d-flex">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="meta-text mt-30 text-center">
+                    <h4>Thin Sandi Oo</h4>
+                    <p>Technical Lead</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact-page-area section-gap">
+    <div class="container">
+        <!-- Google Map -->
+        <div class="row">
+            <div class="map-warp mb-5" style="width:100%; height: 445px;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1909.5303637582165!2d96.1294946819544!3d16.823343188294725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c194c9eca2b75b%3A0xd6abf239773b3969!2sInfo%20Myanmar%20University!5e0!3m2!1sen!2smm!4v1732092562289!5m2!1sen!2smm" 
+                    width="100%" 
+                    height="445" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+
+</section>
+<!-- End Team Area -->
+{% endblock %}

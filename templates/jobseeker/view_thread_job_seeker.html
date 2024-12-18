@@ -1,0 +1,206 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Job Seeker Messenger | HireHub{% endblock %}
+
+{% block content %}
+<style>
+    /* Sidebar styles */
+    .sidebar {
+        height: calc(100vh - 56px); /* Adjust for navbar height */
+        background-color: #343a40;
+        color: #fff;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .sidebar h5 {
+        padding: 15px;
+        margin: 0;
+        background-color: #212529;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar ul li {
+        border-bottom: 1px solid #495057;
+    }
+
+    .sidebar ul li a {
+        display: block;
+        padding: 10px 15px;
+        color: #adb5bd;
+        text-decoration: none;
+    }
+
+    .sidebar ul li a:hover, 
+    .sidebar ul li a.active {
+        background-color: #495057;
+        color: #fff;
+    }
+
+    /* Chat container */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 56px); /* Adjust for navbar height */
+        background-color: #f8f9fa;
+    }
+
+    .chat-header {
+        background-color: #343a40;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #e9ecef;
+    }
+
+    .chat-messages .message {
+        margin-bottom: 15px;
+        max-width: 70%;
+    }
+
+    .chat-messages .message.sent {
+        margin-left: auto;
+        text-align: right;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 15px 15px 0 15px;
+        padding: 10px;
+    }
+
+    .chat-messages .message.received {
+        background-color: #f1f1f1;
+        color: #212529;
+        border-radius: 15px 15px 15px 0;
+        padding: 10px;
+    }
+
+    .chat-footer {
+        display: flex;
+        padding: 10px;
+        background-color: #343a40;
+    }
+
+    .chat-footer input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .chat-footer button {
+        margin-left: 10px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+</style>
+
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">
+                    Messenger
+                </h1>
+                <p class="text-white"><a href="{{ url_for('job_seeker_index') }}">Home</a> <span class="lnr lnr-arrow-right"></span> Messenger</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar" id="sidebar">
+            <h5>Employers</h5>
+            <ul>
+                {% if contacts %}
+                    {% for contact in contacts %}
+                        <li id="contact-{{ contact.thread_id }}">
+                            <a href="{{ url_for('view_thread_job_seeker', thread_id=contact.thread_id) }}" 
+                               class="{% if thread_id == contact.thread_id %}active{% endif %}">
+                                {{ contact.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="text-center text-muted">No active conversations.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="col-md-9 chat-container">
+            {% if thread_id %}
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <h5>Chat with {{ contact_name }}</h5>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages">
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <div class="message {% if msg.sender_id == session['user_id'] %}sent{% else %}received{% endif %}">
+                                <p><strong>{% if msg.sender_id == session['user_id'] %}You{% else %}{{ msg.sender_name }}{% endif %}</strong></p>
+                                <p>{{ msg.content }}</p>
+                                <small>{{ msg.sent_at }}</small>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center">No messages yet. Start a conversation!</p>
+                    {% endif %}
+                </div>
+
+                <!-- Chat Footer -->
+                <div class="chat-footer">
+                    <form action="{{ url_for('send_message_job_seeker') }}" method="POST" class="d-flex w-100">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="thread_id" value="{{ thread_id }}">
+                        <input type="hidden" name="receiver_id" value="{{ receiver_id }}">
+                        <input type="text" name="content" class="form-control" placeholder="Type your message" required>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="d-flex justify-content-center align-items-center flex-grow-1">
+                    <h5 class="text-muted">Select a conversation to start chatting.</h5>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Automatically scroll the chat messages to the bottom
+        const messageArea = document.querySelector(".chat-messages");
+        if (messageArea) {
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // Ensure the selected contact stays visible in the sidebar
+        const activeContact = document.querySelector(".sidebar ul li a.active");
+        if (activeContact) {
+            activeContact.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    });
+</script>
+{% endblock %}

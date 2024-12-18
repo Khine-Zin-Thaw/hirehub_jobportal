@@ -1,0 +1,90 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}View Profile{% endblock %}
+
+{% block content %}
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">My Profile</h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a> 
+                    <span class="lnr lnr-arrow-right"></span> Profile
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4">
+    <div class="row g-4">
+        <!-- Left Column: Profile Overview -->
+        <div class="col-md-4">
+            <div class="p-4 bg-dark" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; border-radius: 20px;">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <img src="{{ url_for('static', filename='jobseeker/images/' ~ job_seeker_profile.profile_picture) }}" 
+                             class="img-fluid rounded-circle" 
+                             alt="Profile Image" 
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/100';">
+                    </div>
+                    <h4 class="text-white">{{ job_seeker_profile.first_name }} {{ job_seeker_profile.last_name }}</h4>
+                    <p class="text-white">{{ job_seeker_profile.desired_job_title }}</p>
+                    <p class="small text-white">{{ job_seeker_profile.bio }}</p>
+                </div>
+                <div>
+                  <h6 class="text-white h5">Skills</h6>
+                  <div class="d-flex flex-wrap gap-2 mb-3">
+                      {% for skill in job_seeker_profile.skills.split(',') %}
+                      <span class="badge bg-primary text-white px-3 py-2" style="font-size: 14px; border-radius: 20px;">
+                          {{ skill.strip() }}
+                      </span>
+                      {% endfor %}
+                  </div>
+              </div>
+                              <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('edit_profile_job_seeker') }}" class="btn btn-dark border-2 border-white btn-md">Edit Profile</a>
+                    <a href="{{ url_for('change_password_job_seeker') }}" class="btn btn-dark border-2 border-white btn-md">Change Password</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Profile Details -->
+        <div class="col-md-8">
+            <div class="p-4 bg-dark mb-4" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; border-radius: 20px;">
+                <h6 class="text-white">Basic Information</h6>
+                <div class="row mb-3 text-white">
+                    <div class="col-6">
+                        <p><strong>Email:</strong> {{ job_seeker_profile.contact_email }}</p>
+                        <p><strong>Phone:</strong> {{ job_seeker_profile.contact_phone }}</p>
+                        <p><strong>Location:</strong> {{ job_seeker_profile.location }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Experience:</strong> {{ job_seeker_profile.experience_years }} years</p> 
+                        <p><strong>Portfolio:</strong> 
+                            <a href="{{ job_seeker_profile.portfolio_url }}" target="_blank" class="text-info">{{ job_seeker_profile.portfolio_url }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h6 class="text-white">Education</h6>
+                    <p class="text-white">{{ job_seeker_profile.education }}</p>
+                </div>
+            </div>
+
+            <!-- CV Section -->
+            <div class="p-4 bg-dark" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset; border-radius: 20px;">
+                <h6 class="text-white">Curriculum Vitae (CV)</h6>
+                <p class="text-white">
+                    <strong>File:</strong> 
+                    <a href="{{ url_for('static', filename='jobseeker/files_cv/' ~ job_seeker_profile.cv_file) }}" target="_blank" class="text-info">
+                        {{ job_seeker_profile.cv_file }}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Employer Profile{% endblock %}
+
+{% block content %}
+<style>
+    .employer-info {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .employer-info h2 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .employer-info p {
+        margin: 5px 0;
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .employer-info a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .employer-info a:hover {
+        text-decoration: underline;
+    }
+
+    .recent-jobs-section {
+        margin-top: 50px;
+    }
+
+    .recent-jobs-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .single-popular-post {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+
+    .single-popular-post .thumb {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .single-popular-post .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .single-popular-post .details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .single-popular-post .details h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .single-popular-post .details h6 {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .single-popular-post .details p {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .back-button {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Employer Profile</h1>
+                <p class="text-white link-nav">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Employer Profile
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!-- Employer Info -->
+<section class="container employer-info text-center">
+    <div class="employer-banner mb-4">
+        <img src="{{ url_for('static', filename='employer/images/' ~ employer.logo) }}" 
+             alt="{{ employer.company_name }}" 
+             class="img-fluid" 
+             style="max-width: 200px; border-radius: 10px; border: 2px solid #ddd;">
+    </div>
+    <h2>{{ employer.company_name }}</h2>
+    <p>{{ employer.description }}</p>
+    <p><strong>Location:</strong> {{ employer.location }}</p>
+    <p><strong>Website:</strong> <a href="{{ employer.website }}" target="_blank">{{ employer.website }}</a></p>
+    <p><strong>Company Size:</strong> {{ employer.company_size }}</p>
+    <p><strong>Established Year:</strong> {{ employer.established_year }}</p>
+    <p><strong>Contact Person:</strong> {{ employer.contact_person }}</p>
+    <p><strong>Contact Email:</strong> <a href="mailto:{{ employer.contact_email }}">{{ employer.contact_email }}</a></p>
+    <p><strong>Contact Phone:</strong> {{ employer.contact_phone }}</p>
+</section>
+
+<!-- Recent Job Openings -->
+<section class="popular-post-area pt-100">
+    <div class="container">
+        <h2 class="h4 text-center mb-5">Recent Job Openings</h2>
+        <div class="row align-items-center">
+            <div class="active-popular-post-carusel">
+                {% if recent_jobs %}
+                    {% for job in recent_jobs %}
+                        <div class="single-popular-post d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ url_for('static', filename='employer/images/' ~ employer.logo) }}" alt="{{ job.title }}">
+                                <a class="btns text-uppercase" href="{{ url_for('job', job_id=job.job_id) }}">view job post</a>
+                            </div>
+                            <div class="details">
+                                <a href="{{ url_for('job', job_id=job.job_id) }}">
+                                    <h4>{{ job.title }}</h4>
+                                </a>
+                                <h6>{{ job.location }}</h6>
+                                <p>Job Type: {{ job.job_type }}</p>
+                                <p>Posted On: {{ job.posted_at }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No recent job postings available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back Button -->
+<div class="back-button">
+    <a href="{{ url_for('jobs') }}" class="btn btn-secondary">Back to Jobs</a>
+</div>
+{% endblock %}

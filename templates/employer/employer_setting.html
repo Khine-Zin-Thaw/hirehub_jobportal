@@ -1,0 +1,91 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Settings | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Account Settings</h4>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="card p-4">
+        <!-- Update Account Email -->
+        <h5 class="fw-bold mb-3">Update Account Email</h5>
+        <form method="POST" action="{{ url_for('update_account_email') }}">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="currentEmail" class="form-label">Current Email</label>
+                    <input type="email" id="currentEmail" class="form-control" value="{{ account_email }}" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="newEmail" class="form-label">New Email</label>
+                    <input type="email" id="newEmail" name="new_email" class="form-control" placeholder="Enter New Email" required>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Update Email</button>
+            </div>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Change Password -->
+    <div class="card p-4">
+        <h5 class="fw-bold mb-3">Change Password</h5>
+        <form method="POST" action="{{ url_for('change_account_password') }}">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label for="currentPassword" class="form-label">Current Password</label>
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        name="current_password"
+                        class="form-control"
+                        placeholder="Enter Current Password"
+                        required
+                    />
+                </div>
+                <div class="col-md-6">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        name="new_password"
+                        class="form-control"
+                        placeholder="Enter New Password"
+                        required
+                    />
+                    <div class="form-text">Your password must be at least 8 characters long and contain a mix of uppercase, lowercase, numbers, and symbols.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirm_password"
+                        class="form-control"
+                        placeholder="Confirm New Password"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-lock-fill"></i> Change Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<!-- Banner Area -->
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">
+                    Edit Profile
+                </h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a> 
+                    <span class="lnr lnr-arrow-right"></span> Profile 
+                    <span class="lnr lnr-arrow-right"></span> Edit Profile
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Profile Form -->
+<section class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="p-4 bg-dark text-white" style="border-radius: 15px; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;">
+                <h2 class="mb-4">Edit Profile</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ job_seeker_profile.first_name }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ job_seeker_profile.last_name }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="contact_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="contact_email" name="contact_email" value="{{ job_seeker_profile.contact_email }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="contact_phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="contact_phone" name="contact_phone" value="{{ job_seeker_profile.contact_phone }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="industry" class="form-label">Industry</label>
+                            <select class="form-select" id="industry" name="industry" required>
+                                <option value="" disabled selected>Select your industry</option>
+                                {% for industry in industries %}
+                                <option value="{{ industry['industry_id'] }}"
+                                    {% if job_seeker_profile.industry_id == industry['industry_id'] %}selected{% endif %}>
+                                    {{ industry['industry_name'] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>                    
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ job_seeker_profile.location }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="desired_job_title" class="form-label">Desired Job Title</label>
+                            <input type="text" class="form-control" id="desired_job_title" name="desired_job_title" value="{{ job_seeker_profile.desired_job_title }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="linkedin_url" class="form-label">LinkedIn URL</label>
+                            <input type="url" class="form-control" id="linkedin_url" name="linkedin_url" value="{{ job_seeker_profile.linkedin_url }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="portfolio_url" class="form-label">Portfolio URL</label>
+                            <input type="url" class="form-control" id="portfolio_url" name="portfolio_url" value="{{ job_seeker_profile.portfolio_url }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="skills" class="form-label">Skills</label>
+                            <input type="text" class="form-control" id="skills" name="skills" value="{{ job_seeker_profile.skills }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="education" class="form-label">Education</label>
+                            <input type="text" class="form-control" id="education" name="education" value="{{ job_seeker_profile.education }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="experience_years" class="form-label">Experience (Years)</label>
+                            <input type="number" class="form-control" id="experience_years" name="experience_years" value="{{ job_seeker_profile.experience_years }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cv_file" class="form-label">Upload CV</label>
+                            <input type="file" class="form-control" id="cv_file" name="cv_file">
+                            <small class="text-muted">
+                                Current CV: 
+                                <a href="{{ url_for('static', filename='jobseeker/files_cv/' ~ job_seeker_profile.cv_file) }}" target="_blank" class="text-info">
+                                    {{ job_seeker_profile.cv_file }}
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cover_letter" class="form-label">Cover Letter</label>
+                            <textarea class="form-control" id="cover_letter" name="cover_letter" rows="5">{{ job_seeker_profile.cover_letter }}</textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="profile_picture" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+                            {% if job_seeker_profile.profile_picture %}
+                                <img src="{{ url_for('static', filename='jobseeker/images/' ~ job_seeker_profile.profile_picture) }}" alt="Profile Picture" style="max-width: 150px; margin-top: 10px;">
+                            {% else %}
+                                <p class="text-muted mt-2">No profile picture uploaded</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('manage_profile_job_seeker') }}" class="btn btn-outline-secondary">Back</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

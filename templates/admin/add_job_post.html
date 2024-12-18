@@ -1,0 +1,161 @@
+{% extends "admin_layout.html" %} {% block title %} Add New Job Post {% endblock
+%} {% block content %}
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h2 class="mb-4">Add New Job Post</h2>
+
+    <form method="POST">
+      <!-- Job Title -->
+      <div class="form-group mb-3">
+        <label for="title" class="form-label">Job Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Job Description -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label">Job Description</label>
+        <textarea
+          id="description"
+          name="description"
+          class="form-control"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Salary Range -->
+      <div class="form-group mb-3">
+        <label for="salary_range" class="form-label">Salary Range</label>
+        <input
+          type="text"
+          id="salary_range"
+          name="salary_range"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Employer Selection -->
+      <div class="form-group mb-3">
+        <label for="employer_id" class="form-label">Employer</label>
+        <select
+          id="employer_id"
+          name="employer_id"
+          class="form-control"
+          required
+        >
+          {% for employer in employers %}
+          <option value="{{ employer.user_id }}">
+            {{ employer.company_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Category Table -->
+      <div class="form-group mb-3">
+        <label for="category_id" class="form-label">Category</label>
+        <select
+          id="category_id"
+          name="category_id"
+          class="form-control"
+          required
+        >
+          {% for category in categories %}
+          <option
+            value="{{ category.category_id }}"
+            data-industry-id="{{ category.industry_id }}"
+          >
+            {{ category.category_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="job_type" class="form-label">Job Type</label>
+        <select class="form-control" id="job_type" name="job_type">
+          <option value="Full Time">Full Time</option>
+          <option value="Part Time">Part Time</option>
+          <option value="Contract">Contract</option>
+          <option value="Freelance">Freelance</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="min_education_level" class="form-label"
+          >Minimum Education Level</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="min_education_level"
+          name="min_education_level"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="experience_level" class="form-label"
+          >Experience Level</label
+        >
+        <select
+          class="form-control"
+          id="experience_level"
+          name="experience_level"
+        >
+          <option value="Entry-Level">Entry-Level</option>
+          <option value="Mid-Level">Mid-Level</option>
+          <option value="Senior-Level">Senior-Level</option>
+          <option value="Manager">Manager</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="full_description" class="form-label"
+          >Full Description</label
+        >
+        <textarea
+          class="form-control"
+          id="full_description"
+          name="full_description"
+          rows="5"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Active Status -->
+      <div class="form-group mb-3">
+        <label for="is_active" class="form-label">Active Status</label>
+        <input type="checkbox" id="is_active" name="is_active" checked />
+        <span> Check to activate the job post</span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success">Add Job Post</button>
+      <a href="{{ url_for('manage_job_posts') }}" class="btn btn-secondary ms-2"
+        >Back to Job Posts</a
+      >
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Analytics | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Job Postings and Applications Analytics</h4>
+    <div class="row g-4">
+        <!-- Analytics Cards -->
+        <div class="col-md-4">
+            <div class="card text-center border-0 shadow-lg rounded">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-bar-chart-line text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Total Job Posts</h5>
+                    <p class="fs-5 fw-bold">{{ total_job_posts }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center border-0 shadow-lg rounded">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-person-lines-fill text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Total Applications</h5>
+                    <p class="fs-5 fw-bold">{{ total_applications }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center border-0 shadow-lg rounded">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-check-circle text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Interview Candidates</h5>
+                    <p class="fs-5 fw-bold">{{ interview_candidates }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="mt-5">
+        <h5 class="text-center mb-4">Performance Charts</h5>
+        <div class="row">
+            <!-- Chart -->
+            <div class="col-md-6 mx-auto">
+                <div class="card shadow-lg border-0 rounded">
+                    <div class="card-body">
+                        <h6 class="card-title text-center">Applications by Job Post</h6>
+                        <div>
+                            <canvas id="applicationsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('employer_index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for Applications Chart
+    const applicationsCtx = document.getElementById('applicationsChart').getContext('2d');
+    new Chart(applicationsCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels | tojson }},
+            datasets: [{
+                label: '# of Applications',
+                data: {{ chart_data | tojson }},
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#ff5722', '#673ab7'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true },
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

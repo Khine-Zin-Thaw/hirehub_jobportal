@@ -1,0 +1,217 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Job Seeker Registration{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    fieldset {
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    legend {
+        font-size: 1.2rem;
+        color: #007bff;
+        padding: 0 10px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+</style>
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Job Seeker Registration</h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Job Seeker Registration
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Job Seeker Registration</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="mb-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+        <!-- Personal Information -->
+        <fieldset class="mb-4">
+            <legend>Personal Information</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" 
+                           pattern="^[\w\.-]+@[\w\.-]+\.\w+$" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" 
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}" 
+                           title="Must contain at least 8 characters, including one number, one uppercase letter, one lowercase letter, and one special character." 
+                           required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Professional Information -->
+        <fieldset class="mb-4">
+            <legend>Professional Information</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="location">Location (Optional)</label>
+                    <input type="text" class="form-control" id="location" name="location">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="desired_job_title">Desired Job Title (Optional)</label>
+                    <input type="text" class="form-control" id="desired_job_title" name="desired_job_title">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="industry">Industry</label>
+                    <select class="form-control" id="industry" name="industry">
+                        <option value="">Select Industry (Optional)</option>
+                        {% for industry in industries %}
+                            <option value="{{ industry['industry_id'] }}">{{ industry['industry_name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="bio">Bio (Optional)</label>
+                    <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Skills and Education -->
+        <fieldset class="mb-4">
+            <legend>Skills and Education</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="skills">Skills (Optional)</label>
+                    <input type="text" class="form-control" id="skills" name="skills">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="experience_years">Experience (in years, Optional)</label>
+                    <input type="number" class="form-control" id="experience_years" name="experience_years">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="education">Education (Optional)</label>
+                    <textarea class="form-control" id="education" name="education" rows="3"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Portfolio and Contact -->
+        <fieldset class="mb-4">
+            <legend>Portfolio and Contact</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="linkedin_url">LinkedIn URL (Optional)</label>
+                    <input type="url" class="form-control" id="linkedin_url" name="linkedin_url">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="portfolio_url">Portfolio URL (Optional)</label>
+                    <input type="url" class="form-control" id="portfolio_url" name="portfolio_url">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="cover_letter">Cover Letter (Optional)</label>
+                    <textarea class="form-control" id="cover_letter" name="cover_letter" rows="4"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="cv_file">Upload CV</label>
+                    <input type="file" class="form-control" id="cv_file" name="cv_file">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contact_email">Contact Email</label>
+                    <input type="email" class="form-control" id="contact_email" name="contact_email" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contact_phone">Contact Phone</label>
+                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success">Register</button>
+        </div>
+    </form>
+    <div class="text-center mt-3">
+        <p>Already have an account? <a href="{{ url_for('jobseeker_login', user_type='job_seeker') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}

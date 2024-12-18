@@ -1,0 +1,151 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Employer Profile | HireHub{% endblock %}
+
+{% block content %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Profile Details</h4>
+    <div class="card p-4">
+        <form method="POST" action="{{ url_for('employer_edit_profile') }}" enctype="multipart/form-data">
+            <div class="d-flex align-items-center justify-content-center mb-4">
+                <!-- Company Logo -->
+                <img id="currentLogo" 
+                     src="{{ url_for('static', filename='employer/images/' + employer.logo) if employer.logo else url_for('static', filename='assets/img/default_logo.png') }}" 
+                     alt="Company Logo" 
+                     class="rounded-circle me-3 shadow-sm" 
+                     height="100" 
+                     width="100">
+                    <div>
+                        <label for="uploadLogo" class="btn btn-primary btn-sm">Upload Company Logo</label>
+                        <button type="button" class="btn btn-secondary btn-sm logo-reset">Reset Logo</button>
+                        <input type="file" id="uploadLogo" name="logo" hidden>
+                    </div>
+                                </div>
+            <div class="row g-3">
+                <!-- Account Email (Read-Only) -->
+                <div class="col-md-6">
+                    <label for="accountEmail" class="form-label">Account Email</label>
+                    <input type="email" id="accountEmail" class="form-control" value="{{ employer.account_email }}" readonly>
+                </div>
+                <!-- Contact Email -->
+                <div class="col-md-6">
+                    <label for="contactEmail" class="form-label">Contact Email</label>
+                    <input type="email" id="contactEmail" name="contact_email" class="form-control" value="{{ employer.contact_email }}">
+                </div>
+                <!-- Company Name -->
+                <div class="col-md-6">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" id="companyName" name="company_name" class="form-control" value="{{ employer.company_name }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="currentIndustry" class="form-label">Current Industry</label>
+                    <input type="text" id="currentIndustry" class="form-control" value="{{ employer.industry_name or 'Not Provided' }}" readonly>
+                </div>
+                <!-- Update Industry -->
+                <div class="col-md-6">
+                    <label for="industry" class="form-label">Update Industry</label>
+                    <select id="industry" name="industry" class="form-select">
+                        <option value="" disabled selected>Select Update Industry</option>
+                        {% for industry in industries %}
+                            <option value="{{ industry.industry_id }}" 
+                                    {% if employer.industry == industry.industry_id %}selected{% endif %}>
+                                {{ industry.industry_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                                                                <!-- Current and Update Location -->
+                <div class="col-md-6">
+                    <label for="location" class="form-label">Current Location</label>
+                    <input type="text" id="location" class="form-control" value="{{ employer.location }}" readonly>
+                    <label for="updateLocation" class="form-label mt-2">Update Location</label>
+                    <input type="text" id="updateLocation" name="location" class="form-control" value="{{ employer.location }}">
+                </div>
+                <!-- Current and Update Company Size -->
+                <div class="col-md-6">
+                    <label for="currentSize" class="form-label">Current Company Size</label>
+                    <input type="text" id="currentSize" class="form-control" value="{{ employer.company_size or 'Not Provided' }}" readonly>
+                    <label for="updateSize" class="form-label mt-2">Update Company Size</label>
+                    <input type="number" id="updateSize" name="company_size" class="form-control" value="{{ employer.company_size }}">
+                </div>
+                <!-- Current and Update Established Year -->
+                <div class="col-md-6">
+                    <label for="currentYear" class="form-label">Established Year</label>
+                    <input type="text" id="currentYear" class="form-control" value="{{ employer.established_year or 'Not Provided' }}" readonly>
+                    <label for="updateYear" class="form-label mt-2">Update Established Year</label>
+                    <input type="number" id="updateYear" name="established_year" class="form-control" value="{{ employer.established_year }}">
+                </div>
+                <!-- Current and Update Contact Phone -->
+                <div class="col-md-6">
+                    <label for="currentPhone" class="form-label">Current Contact Phone</label>
+                    <input type="text" id="currentPhone" class="form-control" value="{{ employer.contact_phone or 'Not Provided' }}" readonly>
+                    <label for="updatePhone" class="form-label mt-2">Update Contact Phone</label>
+                    <input type="text" id="updatePhone" name="contact_phone" class="form-control" value="{{ employer.contact_phone }}">
+                </div>
+                <!-- Contact Person -->
+                <div class="col-md-6">
+                    <label for="contactPerson" class="form-label">Contact Person</label>
+                    <input type="text" id="contactPerson" name="contact_person" class="form-control" value="{{ employer.contact_person }}">
+                </div>
+                <!-- Description -->
+                <div class="col-md-12">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="3">{{ employer.description }}</textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ url_for('employer_index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const uploadLogoInput = document.getElementById("uploadLogo");
+        const currentLogoImg = document.getElementById("currentLogo");
+
+        // Ensure reset button exists before adding event listener
+        const resetButton = document.querySelector('.logo-reset');
+
+        // Update logo preview on file selection
+        uploadLogoInput.addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentLogoImg.src = event.target.result; // Update the logo directly
+                    currentLogoImg.style.opacity = 1; // Ensure full visibility
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle reset button functionality (if it exists)
+        if (resetButton) {
+            resetButton.addEventListener("click", function() {
+                currentLogoImg.src = "{{ url_for('static', filename='employer/images/' + employer.logo) if employer.logo else url_for('static', filename='assets/img/default_logo.png') }}"; // Default logo
+                currentLogoImg.style.opacity = 1; // Restore original opacity
+                uploadLogoInput.value = ""; // Clear file input
+            });
+        }
+    });
+</script>
+
+{% endblock %}

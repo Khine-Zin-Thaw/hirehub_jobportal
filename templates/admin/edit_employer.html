@@ -1,0 +1,145 @@
+{% extends "admin_layout.html" %}
+
+{% block title %} Edit Employer {% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Edit Employer</h4>
+        <form id="formAccountSettings" method="POST" enctype="multipart/form-data" action="{{ url_for('edit_employer', user_id=employer['user_id']) }}">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
+                        </li>
+                    </ul>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul>
+                            {% for category, message in messages %}
+                                <li class="alert alert-{{ category }}">{{ message|safe }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            
+            
+                    <div class="card mb-4">
+                        <h5 class="card-header">Profile Details</h5>
+                        <!-- Account -->
+                        <div class="card-body">
+                            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                <!-- Check if logo exists, else show default image -->
+                                <img src="{{ url_for('static', filename='employer/images/' + employer['logo']) if employer['logo'] else url_for('static', filename='assets/img/avatars/1.png') }}" 
+                                     alt="company-logo" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                                <div class="button-wrapper">
+                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                        <span class="d-none d-sm-block">Upload Logo</span>
+                                        <i class="bx bx-upload d-block d-sm-none"></i>
+                                        <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="logo" />
+                                    </label>
+                                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                        <i class="bx bx-reset d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Reset</span>
+                                    </button>
+                                    <p class="text-muted mb-0">Allowed JPG or PNG. Max size: 2MB.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="company_name" class="form-label">Company Name</label>
+                                    <input class="form-control" type="text" id="company_name" name="company_name" value="{{ employer['company_name'] }}" placeholder="Enter Company Name" required />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input class="form-control" type="text" id="location" name="location" value="{{ employer['location'] }}" placeholder="Enter Location" required />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="contact_email" class="form-label">Contact Email</label>
+                                    <input class="form-control" type="email" id="contact_email" name="contact_email" value="{{ employer['contact_email'] }}" placeholder="Enter Email" required />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="industry" class="form-label">Industry</label>
+                                    <select class="form-control" id="industry" name="industry" required>
+                                        <option value="" disabled>Select Industry</option>
+                                        {% for industry in industries %}
+                                            <option value="{{ industry['industry_id'] }}" {% if employer['industry'] == industry['industry_id'] %} selected {% endif %}>
+                                                {{ industry['industry_name'] }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="company_size" class="form-label">Company Size</label>
+                                    <input class="form-control" type="text" id="company_size" name="company_size" value="{{ employer['company_size'] }}" placeholder="Enter Company Size" />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="description" class="form-label">Company Description</label>
+                                    <textarea class="form-control" id="description" name="description" placeholder="Enter Company Description">{{ employer['description'] }}</textarea>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="established_year" class="form-label">Established Year</label>
+                                    <input class="form-control" type="number" id="established_year" name="established_year" value="{{ employer['established_year'] }}" placeholder="Enter Established Year" required />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="website" class="form-label">Website</label>
+                                    <input class="form-control" type="url" id="website" name="website" value="{{ employer['website'] }}" placeholder="Enter Website URL" />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="contact_person" class="form-label">Contact Person</label>
+                                    <input class="form-control" type="text" id="contact_person" name="contact_person" value="{{ employer['contact_person'] }}" placeholder="Enter Contact Person" required />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="contact_phone" class="form-label">Contact Phone</label>
+                                    <input class="form-control" type="text" id="contact_phone" name="contact_phone" value="{{ employer['contact_phone'] }}" placeholder="Enter Contact Phone" required />
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="submit" class="btn btn-primary me-2">Update Employer</button>
+                                <a href="{{ url_for('manage_users') }}" class="btn btn-secondary ms-2">Back</a>
+                            </div>
+                        </div>
+                        <!-- /Account -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const uploadInput = document.getElementById("upload");
+        const avatarImg = document.getElementById("uploadedAvatar");
+        const resetButton = document.querySelector('.account-image-reset');
+    
+        // Update avatar preview on file selection
+        uploadInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    avatarImg.src = event.target.result; // Update the image preview
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    
+        // Reset to default avatar and clear file input
+        resetButton.addEventListener('click', function () {
+            avatarImg.src = "{{ url_for('static', filename='employer/images/' + employer['logo']) if employer['logo'] else url_for('static', filename='assets/img/avatars/1.png') }}"; // Set default avatar
+            uploadInput.value = ""; // Clear the file input's value
+    
+            // Ensure change event triggers even for the same file
+            uploadInput.dispatchEvent(new Event('change')); // Programmatically dispatch a change event
+        });
+    });
+    </script>
+{% endblock %}
+
+

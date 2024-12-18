@@ -1,0 +1,51 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}Job Post Details | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">Job Post Details</h4>
+    <div class="card shadow-lg p-4">
+        <!-- Employer Logo -->
+        <div class="text-center mb-4">
+            <img 
+                src="{{ url_for('static', filename='employer/images/' + job.logo) if job.logo else url_for('static', filename='assets/img/default_logo.png') }}" 
+                alt="Company Logo" 
+                class="rounded-circle" 
+                width="100" 
+                height="100">
+        </div>
+
+        <h5 class="text-primary fw-bold mb-3">{{ job.title }}</h5>
+        <p><strong>Company:</strong> {{ job.company_name }}</p>
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+        <p><strong>Industry:</strong> {{ job.industry_name }}</p>
+        <p><strong>Category:</strong> {{ job.category_name }}</p>
+        <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+        <p><strong>Education Level:</strong> {{ job.min_education_level }}</p>
+        <p><strong>Experience Level:</strong> {{ job.experience_level }}</p>
+        <p><strong>Description:</strong> {{ job.description }}</p>
+        <p><strong>Full Description:</strong> {{ job.full_description }}</p>
+        <p>
+            <strong>Status:</strong> 
+            {% if job.is_active %}
+                <span class="badge bg-success">Active</span>
+            {% else %}
+                <span class="badge bg-danger">Inactive</span>
+            {% endif %}
+        </p>
+        <p><strong>Posted At:</strong> {{ job.posted_at }}</p>
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('manage_job_post_employer') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Manage Job Posts
+            </a>
+            <div>
+                <a href="{{ url_for('employer_edit_job_posts', job_id=job.job_id) }}" class="btn btn-primary">
+                    <i class="bi bi-pencil-fill"></i> Edit Job Post
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

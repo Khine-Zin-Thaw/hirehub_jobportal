@@ -1,0 +1,244 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Job Details{% endblock %}
+
+{% block content %}
+<style>
+    .employer-logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .employer-logo img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 2px solid #eaeaea;
+    }
+    
+    .job-details-container {
+        background-color: #f8f9fa;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .job-card, .employer-card {
+        background-color: #fff;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .recommended-jobs .single-recommended-job {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .recommended-jobs .thumb img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .recommended-jobs .thumb {
+        margin-right: 15px;
+    }
+
+    .recommended-jobs .details h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .recommended-jobs .details h6 {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .single-popular-post {
+        background-color: #1a1a1a;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        height: 150px; /* Ensure consistent height */
+    }
+    
+    .single-popular-post .thumb {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .single-popular-post .thumb img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%; /* Optional: If you want circular images */
+    }
+    
+    .single-popular-post .thumb .btns {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #17a2b8;
+        color: #fff;
+        border-radius: 20px;
+        font-size: 12px;
+        text-decoration: none;
+    }
+    
+    .single-popular-post .details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #fff;
+    }
+    
+    .single-popular-post .details h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    
+    .single-popular-post .details h6 {
+        font-size: 14px;
+        color: #17a2b8;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Job Post Details</h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Job Post Details
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Job Details Section -->
+<section class="container job-details-container">
+    <div class="employer-logo">
+        {% if job.logo %}
+            <img src="{{ url_for('static', filename='employer/images/' ~ job.logo) }}" alt="Employer Logo">
+        {% else %}
+            <p>No Logo Available</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        <!-- Job Description -->
+        <div class="col-lg-8">
+            <div class="job-card">
+                <h3>{{ job.title or "Job Title Not Available" }}</h3>
+                <p><strong>{{ job.description or "A Big Opportunity for ..." }}</strong></p>
+                <p>{{ job.full_description or "Additional details about the role will be provided." }}</p>
+            </div>
+                    </div>
+
+        <!-- Job Details Sidebar -->
+        <div class="col-lg-4">
+            <div class="employer-card">
+                <a href="{{ url_for('apply', job_id=job.job_id) }}" class="btn btn-primary btn-block mb-4">APPLY HERE</a>
+                <ul class="list-group">
+                    <!-- Experience Level -->
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="lnr lnr-star" style="font-size: 20px; margin-right: 10px;"></span>
+                        <div>
+                            <strong>Experience Level:</strong><br>
+                            {{ job.experience_level or "Not Specified" }}
+                        </div>
+                    </li>
+                    <!-- Job Function -->
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="lnr lnr-briefcase" style="font-size: 20px; margin-right: 10px;"></span>
+                        <div>
+                            <strong>salary Range:</strong><br>
+                            {{ job.salary_range or "Not Specified" }}
+                        </div>
+                    </li>
+                    <!-- Min Education Level -->
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="lnr lnr-graduation-hat" style="font-size: 20px; margin-right: 10px;"></span>
+                        <div>
+                            <strong>Min Education Level:</strong><br>
+                            {{ job.min_education_level or "Not Specified" }}
+                        </div>
+                    </li>
+                    <!-- Job Type -->
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="lnr lnr-clock" style="font-size: 20px; margin-right: 10px;"></span>
+                        <div>
+                            <strong>Job Type:</strong><br>
+                            {{ job.job_type or "Not Specified" }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recommended Jobs Section -->
+<section class="popular-post-area pt-100">
+    <div class="container">
+        <h2 class="h4 text-center mb-5">Recommended Jobs</h2>
+        <div class="row align-items-center">
+            <div class="active-popular-post-carusel">
+                {% if recommended_jobs %}
+                    {% for recommended_job in recommended_jobs %}
+                        <div class="single-popular-post d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ url_for('static', filename='employer/images/' ~ recommended_job.logo) }}" alt="Job Image">
+                                <a class="btns text-uppercase" href="{{ url_for('job', job_id=recommended_job.job_id) }}">view job post</a>
+                            </div>
+                            <div class="details">
+                                <a href="{{ url_for('job', job_id=recommended_job.job_id) }}">
+                                    <h4>{{ recommended_job.title }}</h4>
+                                </a>
+                                <h6>{{ recommended_job.location }}</h6>
+                                <p><strong>Salary:</strong> {{ recommended_job.salary_range }}</p>
+                                <p class="text-muted">{{ recommended_job.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No recommended jobs available at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

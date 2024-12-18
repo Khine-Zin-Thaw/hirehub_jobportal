@@ -1,0 +1,39 @@
+{% extends "employer_layout.html" %}
+
+{% block title %}View All Job Seekers | HireHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="fw-bold text-center mb-4">All Job Seekers</h4>
+    <div class="row">
+        {% for job_seeker in job_seekers %}
+        <div class="col-md-4">
+            <div class="card shadow-lg mb-4">
+                <div class="card-body text-center">
+                    <img src="{{ url_for('static', filename='jobseeker/images/' + job_seeker.profile_picture) if job_seeker.profile_picture else url_for('static', filename='assets/img/avatars/1.png') }}" 
+                         alt="Profile Picture" 
+                         class="rounded-circle mb-3" 
+                         width="80" 
+                         height="80">
+                    <h5 class="card-title">{{ job_seeker.first_name }} {{ job_seeker.last_name }}</h5>
+                    <p class="card-text"><strong>Location:</strong> {{ job_seeker.location }}</p>
+                    <p class="card-text"><strong>Experience:</strong> {{ job_seeker.experience_years }} years</p>
+                    <p class="card-text"><strong>Skills:</strong> {{ job_seeker.skills }}</p>
+                    <a href="{{ url_for('normal_view_details', job_seeker_id=job_seeker.user_id) }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-person-lines-fill"></i> View Details
+                    </a>
+                    <form action="{{ url_for('start_conversation') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="job_seeker_id" value="{{ job_seeker.user_id}}">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="bi bi-chat-dots"></i> Start Conversation
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

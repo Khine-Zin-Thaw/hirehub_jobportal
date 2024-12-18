@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Employer Dashboard | HireHub{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .hero {
+            background: rgba(20,23,129,1);
+            color: white;
+            text-align: center;
+            padding: 60px 0;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #007bff;
+        }
+        .footer .btn-outline-light {
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .footer .btn-outline-light:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('employer_index') }}">HireHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url_for('employer_index') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url_for('employer_messenger') }}">
+                        <i class="bi bi-chat-dots-fill"></i> Messenger
+                    </a>
+                </li>
+                <!-- Notifications -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="notificationsDropdown" 
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell"></i> Notifications
+                        <span class="badge bg-danger" id="notification-count">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" id="notification-list">
+                        <li><a class="dropdown-item text-center text-muted">No notifications</a></li>
+                    </ul>
+                </li>
+    <!-- Profile -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-2"></i>Profile
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('employer_profile') }}">View Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('employer_settings') }}">Setting</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url_for('employer_index') }}">Employer Site</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container my-5">
+    {% block content %}
+
+    <!-- Page-specific content goes here -->
+
+    {% endblock %}
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>HireHub</h5>
+                <p>Connecting employers with top talent to simplify hiring.</p>
+            </div>
+            <div class="col-md-3">
+                <h6>Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">Employers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6>Contact Us</h6>
+                <p><i class="bi bi-envelope"></i> info@hirehub.com</p>
+                <p><i class="bi bi-phone"></i> +1 234 567 890</p>
+            </div>
+            <div class="col-md-3">
+                <h6>Follow Us</h6>
+                <a href="#" class="btn btn-outline-light m-1"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="btn btn-outline-light m-1"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="btn btn-outline-light m-1"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="text-center py-3">
+            © 2024 HireHub. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch notifications on page load
+        fetch('/notifications')
+            .then(response => response.json())
+            .then(data => {
+                const notificationList = document.getElementById('notification-list');
+                const notificationCount = document.getElementById('notification-count');
+
+                if (data.length === 0) {
+                    notificationList.innerHTML = '<li><a class="dropdown-item text-center text-muted">No notifications</a></li>';
+                } else {
+                    notificationList.innerHTML = data.map(notif => `
+                        <li>
+                            <a class="dropdown-item" href="/view_thread/${notif.thread_id}" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               onclick="resetNotification(${notif.thread_id})">
+                                <strong>${notif.title}</strong><br>
+                                <small>${notif.message}</small>
+                            </a>
+                        </li>
+                    `).join('');
+                    notificationCount.textContent = data.filter(notif => notif.is_read === 0).length;
+                }
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    });
+
+    function resetNotification(threadId) {
+        fetch(`/reset_notifications/${threadId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const notificationCount = document.getElementById('notification-count');
+                    notificationCount.textContent = 0; // Reset count visually
+
+                    // Fetch notifications again to update their "read" status
+                    fetch('/notifications')
+                        .then(response => response.json())
+                        .then(updatedNotifications => {
+                            const notificationList = document.getElementById('notification-list');
+                            if (updatedNotifications.length === 0) {
+                                notificationList.innerHTML = '<li><a class="dropdown-item text-center text-muted">No notifications</a></li>';
+                            } else {
+                                notificationList.innerHTML = updatedNotifications.map(notif => `
+                                    <li>
+                                        <a class="dropdown-item" href="/view_thread/${notif.thread_id}" target="_blank" rel="noopener noreferrer">
+                                            <strong>${notif.title}</strong><br>
+                                            <small>${notif.message}</small>
+                                        </a>
+                                    </li>
+                                `).join('');
+                            }
+                        });
+                }
+            })
+            .catch(error => console.error('Error resetting notification:', error));
+    }
+</script>
+
+</body>
+</html>

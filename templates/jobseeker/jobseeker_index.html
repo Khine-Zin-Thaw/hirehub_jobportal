@@ -1,0 +1,284 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Home Page - Job Seeker{% endblock %}
+
+{% block content %}
+<style>
+        /* Partnership Employers Styles */
+        .partnership-area {
+            background-color: #f7f7f7;
+            padding: 50px 0;
+        }
+    
+        .partnership-area h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    
+        .partnership-area .employer-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 120px;
+            height: 120px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .partnership-area .employer-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image fits within the container */
+        }
+    
+        .partnership-area .employer-name {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            color: #333;
+            word-wrap: break-word;
+        }
+    
+    .single-popular-post {
+        background-color: #1a1a1a;
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        height: 150px; /* Ensure consistent height */
+    }
+    
+    .single-popular-post .thumb {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .single-popular-post .thumb img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%; /* Optional: If you want circular images */
+    }
+    
+    .btns {
+        display: inline-block;
+        padding: 8px 15px;
+        font-size: 14px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #fff;
+        background-color: #17a2b8; /* Teal shade for buttons */
+        border-radius: 20px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btns:hover {
+        background-color: #138496; /* Darker teal on hover */
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .single-popular-post .details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #fff;
+    }
+    
+    .single-popular-post .details h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    
+    .single-popular-post .details h6 {
+        font-size: 14px;
+        color: #17a2b8;
+        margin-bottom: 10px;
+    }
+
+    .feature-cat-area .single-fcat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .feature-cat-area .single-fcat .employer-logo-container {
+        width: 100px;
+        height: 100px;
+        background-color: #f5f5f5;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .feature-cat-area .single-fcat .employer-logo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .feature-cat-area .single-fcat p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #333;
+        text-align: center;
+        word-wrap: break-word;
+    }
+</style>
+
+<!-- Start Filter Jobs by Industry Area -->
+<section class="banner-area relative" id="industry-filter">    
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-12">
+                <h1 class="text-white text-center mb-4">
+                    Filter Jobs by Industry                
+                </h1>
+                <form method="POST" action="{{ url_for('job_seeker_index') }}" class="serach-form-area">
+                    <div class="row justify-content-center form-wrap">
+                        <div class="col-lg-6 form-cols">
+                            <select name="industry_id" class="form-select w-100">
+                                <option value="" selected>-- Select an Industry --</option>
+                                {% for industry in industries %}
+                                    <option value="{{ industry['industry_id'] }}" 
+                                            {% if industry['industry_id'] == selected_industry_id %}selected{% endif %}>
+                                        {{ industry['industry_name'] }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-2 form-cols">
+                            <button type="submit" class="btn btn-info w-100">
+                                <span class="lnr lnr-magnifier"></span> Filter
+                            </button>
+                        </div>                                
+                    </div>
+                </form>
+                {% if jobs %}
+                <div class="container mt-5">
+                    <h2 class="text-white text-center mb-5">Filtered Jobs</h2>
+                    <div class="row">
+                        {% for job in jobs %}
+                            <div class="col-md-6 mb-4">
+                                <div class="single-popular-post d-flex flex-row align-items-center">
+                                    <div class="thumb">
+                                        <img class="img-fluid" src="{{ url_for('static', filename='employer/images/' ~ job['logo']) }}" alt="Job Image">
+                                        <a class="btns text-uppercase" 
+                                           href="{% if session.get('user_id') and session.get('user_type') == 'job_seeker' %}
+                                                 {{ url_for('job', job_id=job['job_id']) }}
+                                              {% else %}
+                                                 {{ url_for('login', user_type='job_seeker') }}
+                                              {% endif %}">
+                                           {% if session.get('user_id') and session.get('user_type') == 'job_seeker' %}
+                                               View Job Post
+                                           {% else %}
+                                               Login to View Details
+                                           {% endif %}
+                                        </a>
+                                    </div>
+                                    <div class="details">
+                                        <a href="{{ url_for('job', job_id=job['job_id']) }}">
+                                            <h4>{{ job['title'] }}</h4>
+                                        </a>
+                                        <h6>{{ job['location'] }}</h6>
+                                        <p>
+                                            <strong>Salary:</strong> {{ job['salary_range'] }}<br>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                    <p class="text-white text-center mt-5">No jobs found for the selected industry.</p>
+                {% endif %}
+            </div>                                                
+        </div>
+    </div>
+</section>
+<!-- End Filter Jobs by Industry Area -->
+
+<!-- Start Job Trends Area -->
+<section class="popular-post-area pt-100">
+    <div class="container">
+        <h2 class="h4 text-center mb-5">Job Trends</h2>
+        <div class="row align-items-center">
+            <div class="active-popular-post-carusel">
+                {% if trending_jobs %}
+                    {% for job in trending_jobs %}
+                        <div class="single-popular-post d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="{{ url_for('static', filename='employer/images/' ~ job['logo']) }}" alt="Job Image">
+                                <a class="btns text-uppercase" 
+                                   href="{% if session.get('user_id') and session.get('user_type') == 'job_seeker' %}
+                                         {{ url_for('job', job_id=job['job_id']) }}
+                                      {% else %}
+                                         {{ url_for('jobseeker_login', user_type='job_seeker') }}
+                                      {% endif %}">
+                                   {% if session.get('user_id') and session.get('user_type') == 'job_seeker' %}
+                                       View Job Post
+                                   {% else %}
+                                       Login to View Details
+                                   {% endif %}
+                                </a>
+                            </div>
+                            <div class="details">
+                                <a href="#"><h4>{{ job['title'] }}</h4></a>
+                                <h6>{{ job['location'] }}</h6>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No trending jobs available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Job Trends Area -->
+
+<!-- Start Partnership Employers Area -->
+<section class="partnership-area">
+    <div class="container">
+        <h2>Our Partnership Employers</h2>
+        <div class="row justify-content-center">
+            {% if partnership_employers %}
+                {% for employer in partnership_employers %}
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                        <div class="employer-logo-container">
+                            <img class="employer-logo" src="{{ url_for('static', filename='employer/images/' ~ employer['logo']) }}" alt="{{ employer['company_name'] }}">
+                        </div>
+                        <p class="employer-name">{{ employer['company_name'] }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center">No partnership employers available.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<!-- End Partnership Employers Area -->
+
+
+{% endblock %}

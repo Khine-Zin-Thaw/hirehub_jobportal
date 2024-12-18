@@ -1,0 +1,119 @@
+{% extends "jobseeker_layout.html" %}
+
+{% block title %}Track Applications{% endblock %}
+
+{% block content %}
+
+<!-- Banner Area -->
+<section class="banner-area relative" id="contact-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12 text-center">
+                <h1 class="text-white">Track Applications</h1>
+                <p class="text-white">
+                    <a href="{{ url_for('job_seeker_index') }}">Home</a>
+                    <span class="lnr lnr-arrow-right"></span> Track Applications
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Application Tracking Table -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Track Your Applications</h2>
+
+    {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Location</th>
+                        <th>Employer</th>
+                        <th>Cover Letter</th>
+                        <th>CV</th>
+                        <th>Application Status</th>
+                        <th>Applied At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                        <tr>
+                            <td>{{ application.job_title }}</td>
+                            <td>{{ application.job_location }}</td>
+                            <td>
+                                <a href="{{ url_for('view_employer', employer_id=application.employer_id) }}" class="text-decoration-underline">
+                                    {{ application.employer_name }}
+                                </a>
+                            </td>
+                            <td>
+                                {% if application.cover_letter %}
+                                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#coverLetterModal{{ loop.index }}">
+                                        View
+                                    </button>
+
+                                    <!-- Modal for Cover Letter -->
+                                    <div class="modal fade" id="coverLetterModal{{ loop.index }}" tabindex="-1" aria-labelledby="coverLetterLabel{{ loop.index }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="coverLetterLabel{{ loop.index }}">Cover Letter</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>{{ application.cover_letter }}</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted">No Cover Letter</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if application.cv_file_path %}
+                                    <a href="{{ url_for('static', filename='jobseeker/files_cv/' ~ application.cv_file_path) }}" target="_blank" class="btn btn-sm btn-primary">
+                                        View CV
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">No CV</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if application.application_status == "Pending" %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill">{{ application.application_status }}</span>
+                                {% elif application.application_status == "Accepted" %}
+                                    <span class="badge bg-success text-light fs-6 px-3 py-2 rounded-pill">{{ application.application_status }}</span>
+                                {% elif application.application_status == "Rejected" %}
+                                    <span class="badge bg-danger text-light fs-6 px-3 py-2 rounded-pill">{{ application.application_status }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary text-light fs-6 px-3 py-2 rounded-pill">{{ application.application_status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ application.applied_at }}</td>
+                            <td>
+                                <a href="{{ url_for('job', job_id=application.job_id) }}" class="btn btn-sm btn-info">View Job</a>
+                                <a href="{{ url_for('view_employer', employer_id=application.employer_id) }}" class="btn btn-sm btn-secondary">View Employer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <p class="text-muted">You have not applied to any jobs yet.</p>
+        </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-center mt-4">
+        <a href="{{ url_for('job_seeker_index') }}" class="btn btn-outline-primary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
